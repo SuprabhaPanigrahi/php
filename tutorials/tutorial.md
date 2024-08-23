@@ -3,7 +3,7 @@
 
 <br>
 <div style="text-align:center">
-<img src = "images/image.png" style="border-radius:50%"/>
+<img src="images/image.png" style="border-radius:50%" alt=""/>
 <p style="text-align:center">
 Rasmus Lerdorf
 <p>
