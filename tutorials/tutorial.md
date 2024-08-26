@@ -972,3 +972,1179 @@ echo gettype($num);  // Output: double
 echo $num; // Output: 45.67
 ```
 
+# 2.2 Operators in PHP
+
+- **Arithmetic Operators**  
+  - Basic operations: `+`, `-`, `*`, `/`, `%`
+  - Understanding operator precedence
+- **Assignment Operators**  
+  - Basic assignment: `=`
+  - Compound assignment: `+=`, `-=`, `*=`, etc.
+- **Comparison Operators**  
+  - Basic comparison: `==`, `!=`, `>`, `<`, `>=`, `<=`
+  - Identical and not identical: `===`, `!==`
+  - Null coalescing operator: `??`
+- **Logical Operators**  
+  - Basic logical operators: `&&`, `||`, `!`
+  - Short-circuit evaluation
+- **String Operators**  
+  - Concatenation operator: `.`
+  - Concatenation assignment: `.=` 
+
+---
+## 🎯 **Operators in PHP**
+
+Operators are essential tools in PHP for performing various operations. Understanding these operators is crucial for writing efficient and effective PHP code. Let's explore the different types of operators in PHP!
+
+---
+
+## ➕ **Arithmetic Operators**
+
+Arithmetic operators are used for performing mathematical calculations. 
+
+| **Operator** | **Description**        | **Example**         |
+|--------------|------------------------|---------------------|
+| `+`          | Addition               | `$a + $b`           |
+| `-`          | Subtraction            | `$a - $b`           |
+| `*`          | Multiplication         | `$a * $b`           |
+| `/`          | Division               | `$a / $b`           |
+| `%`          | Modulus (remainder)    | `$a % $b`           |
+
+### 📊 **Understanding Operator Precedence**
+
+Operator precedence determines how operators are parsed concerning each other. Operators with higher precedence are evaluated first.
+
+For example:  
+```php
+$result = 5 + 3 * 2;  // Output: 11 (Multiplication first, then addition)
+```
+##  📥 Assignment Operators
+
+Assignment operators are used to assign values to variables.
+
+| **Operator**  | **Description**           | **Example**                   |
+|---------------|---------------------------|-------------------------------|
+| `=`           | Assignment                |`$x = 5`                       |
+| `+=`          | Addition Assignment       |`$x += 3 (same as $x = $x + 3)`|
+| `-=`          | Subtraction  Assignment   |`$x -= 3 (same as $x = $x-3)`  |
+| `*=`          | Multiplication  Assignment|`$x *= 3 (same as $x = $x * 3)`|
+| `/=`          | Division Assignment       |`$x /= 3 (same as $x = $x / 3)`|
+
+## 🔍 Comparison Operators
+
+Comparison operators are used to compare two values.
+
+| **Operator**  | **Description**                 | **Example**           |
+|---------------|---------------------------------|-----------------------|
+|==	            |Equal	                          |5 == 5 (true)          |
+|!=	            |Not equal	                      |5 != 3 (true)          |
+|>	            |Greater than	                    |5 > 3 (true)           |
+|<	            |Less than	                      |3 < 5 (true)           |
+|>=	            |Greater than or equal to	        |5 >= 5 (true)          |
+|<=	            |Less than or equal to	          |3 <= 5 (true)          |
+|===	          |Identical (Equal and same type)  |5 === "5" (false)      |
+|!==	          |Not identical	                  |5 !== "5" (true)       |
+|??	            |Null coalescing	                |$x = $y ?? 'default'   |
+
+## 🔗 Logical Operators
+
+Logical operators are used to combine conditional statements.
+
+| **Operator**  | **Description**                 | **Example**             |
+|---------------|---------------------------------|-------------------------|
+|`&&`           |Logical AND	                    |(5 > 3) && (2 < 4) (true)|
+|`\|\|`         |Logical OR	                      |5 \|\| 3 (true)          |
+|`!`            |Logical NOT	                    |!(5 > 3) (false)         |
+
+### 💡 Short-circuit Evaluation
+
+Logical operators use short-circuit evaluation, which means the second operand is not evaluated if the result can already be determined from the first operand.
+
+```
+$result = (5 > 3) && ($x = 2); // If the first expression is false, $x is never set
+```
+
+## 📝 String Operators
+
+String operators are used to manipulate and concatenate strings.
+
+| **Operator**  | **Description**         | **Example**                                               |
+|---------------|-------------------------|-----------------------------------------------------------|
+|`.`            |Concatenation            |'Hello' . ' World!' = 'Hello World!'                       |
+|`.=`           |Concatenation Assignment |$txt = 'Hello'; $txt .= ' World!'; ($txt is 'Hello World!')|
+|
+
+
+# 2.3 🌟 Control Structures 🌟
+
+- **Conditional Statements**  
+  - 1. Conditional Operator `expr1 ? expr2 : expr3 `
+  - 2. `if`
+  - 3. `if-else`
+  - 4. `elseif` vs. `else if`
+  - 5. `nested if`
+  - 6. `switch-case`
+
+- **Looping Structures**  
+  - 1. `while` loop and `do-while` loop
+  - 2. `for` loop and `foreach` loop
+  - 3. Understanding loop control: `break` and `continue`
+
+- **Alternative Syntax for Control Structures**  
+  - Understanding and using alternative syntax for templating
+
+
+## 🧩 Conditional Statements
+
+Conditional statements are fundamental for decision-making in programming. They allow you to execute different blocks of code based on specific conditions.
+
+### 1. Conditional Operator: `expr1 ? expr2 : expr3`
+
+The **conditional operator** (ternary operator) is a concise way to perform conditional logic. It evaluates a condition and returns one of two values based on whether the condition is true or false.
+
+**Syntax:**
+```php
+$result = (condition) ? value_if_true : value_if_false;
+```
+Example:
+```php
+$age = 18;
+$status = ($age >= 18) ? "Adult" : "Minor";
+echo $status; // Output: Adult
+```
+Flow Chart:<br/>
+   ![alt text](image.png)
+
+Example :
+
+#### Scenario: Determine if a user is eligible for a senior citizen discount.
+
+```php
+$age = 65;
+$discount = ($age >= 60) ? "Eligible for discount" : "Not eligible for discount";
+echo $discount; // Output: Eligible for discount
+```
+### 2. if
+PHP if statement allows conditional execution of code. It is executed if condition is true.
+
+If statement is used to executes the block of code exist inside the if statement only if the specified condition is true.
+
+Syntax :
+
+```php
+if(condition){  
+//code to be executed  
+}  
+```
+Flowchart:<br/>
+![alt text](image-3.png)
+
+Example :
+
+```php
+  <?php  
+$num=12;  
+if($num<100){  
+echo "$num is less than 100";  
+}  
+?> 
+``` 
+### 3. if-else 
+
+The if-else statement evaluates a condition and executes one block of code if the condition is true, and another block if it is false. Nesting if-else allows for more complex decision-making.
+
+Syntax:
+
+```php
+if (condition) {
+    // code to execute if condition is true
+} else {
+    // code to execute if condition is false
+}
+```
+Flow Chart:<br/>
+
+![alt text](image-1.png)
+
+
+Example-01:
+
+```php
+$temperature = 30;
+
+if ($temperature > 25) {
+    echo "It's hot outside!";
+} else {
+    echo "It's cool outside.";
+}
+
+```
+Example-02:
+
+#### Scenario: Determine the discount based on a purchase amount.
+
+```php
+$purchaseAmount = 150;
+
+if ($purchaseAmount > 100) {
+    $discount = 20;
+} else {
+    $discount = 5;
+}
+
+echo "Discount: $discount%";
+```
+
+### 4. `elseif` vs. `else if`
+
+**elseif** and **else if** are functionally similar but elseif is generally preferred for its readability and compactness.
+
+Syntax:
+```php
+if (condition1) {
+    // code
+} elseif (condition2) {
+    // code
+} else {
+    // code
+}
+```
+Flowchart :
+
+![alt text](image-2.png)
+
+
+Example-01:
+
+```php
+$grade = 85;
+
+if ($grade >= 90) {
+    echo "Grade A";
+} elseif ($grade >= 80) {
+    echo "Grade B";
+} elseif ($grade >= 70) {
+    echo "Grade C";
+} else {
+    echo "Grade D";
+}
+```
+
+Example-02 :
+
+#### Scenario: Assign a performance rating based on sales figures.
+
+```php
+$sales = 5000;
+
+if ($sales >= 10000) {
+    $rating = "Excellent";
+} elseif ($sales >= 5000) {
+    $rating = "Good";
+} elseif ($sales >= 2000) {
+    $rating = "Average";
+} else {
+    $rating = "Needs Improvement";
+}
+
+echo "Performance: $rating";
+
+```
+
+### 5. `nested if`
+
+The nested if statement contains the if block inside another if block. The inner if statement executes only when specified condition in outer if statement is true.
+
+Syntax:
+
+```php
+if (condition) {    
+//code to be executed if condition is true   
+if (condition) {    
+//code to be executed if condition is true    
+}    
+}   
+```
+Flowchart: <br/>
+
+![alt text](image-4.png)
+
+Example:
+
+```php
+<?php  
+    $age = 23;  
+    $nationality = "Indian";  
+    //applying conditions on nationality and age  
+    if ($nationality == "Indian")  
+    {  
+        if ($age >= 18) {  
+            echo "Eligible to give vote";  
+        }  
+        else {    
+            echo "Not eligible to give vote";  
+        }  
+    }  
+?>  
+```
+
+### 6. Switch-case
+
+The switch-case  is used to execute one block of code among multiple options. It’s ideal when dealing with multiple values of a single variable.
+
+Syntax:
+
+```php
+switch (variable) {
+    case value1:
+        // code
+        break;
+    case value2:
+        // code
+        break;
+    default:
+        // code
+}
+```
+Example:
+
+```php
+$day = 'Tuesday';
+
+switch ($day) {
+    case 'Monday':
+        echo "Start of the week.";
+        break;
+    case 'Tuesday':
+        echo "Second day of the week.";
+        break;
+    case 'Friday':
+        echo "Almost weekend!";
+        break;
+    default:
+        echo "Mid-week or weekend.";
+}
+```
+
+Flow Chart:
+
+![alt text](image-5.png)
+
+Example-01:
+
+Scenario: Determine the type of a beverage based on its code.
+
+```php
+$beverageCode = 'T';
+
+switch ($beverageCode) {
+    case 'C':
+        echo "Coffee";
+        break;
+    case 'T':
+        echo "Tea";
+        break;
+    case 'J':
+        echo "Juice";
+        break;
+    default:
+        echo "Unknown beverage";
+}
+```
+
+Example-02 :
+
+Scenario: Determine the day of the week and respond accordingly.
+
+```php
+$dayOfWeek = 'Wednesday';
+
+switch ($dayOfWeek) {
+    case 'Monday':
+        echo "Meeting day.";
+        break;
+    case 'Wednesday':
+        echo "Work on project.";
+        break;
+    case 'Friday':
+        echo "Prepare for the weekend.";
+        break;
+    default:
+        echo "Regular working day.";
+}
+```
+
+## 🔄 Looping Structures
+
+Loops allow you to execute a block of code repeatedly. Here’s a look at the different looping structures in PHP.
+
+### 1. while Loop
+
+ **while Loop:** Executes a block of code as long as the specified condition is true.
+
+ **Syntax:**
+
+ ```php
+ while (condition) {
+    // code to execute
+}
+```
+**Example:**
+```php
+$i = 1;
+while ($i <= 5) {
+    echo $i++;
+}
+```
+
+### do-while Loop
+
+**do-while Loop:** Executes a block of code at least once before checking the condition.
+
+**Syntax:**
+```php
+do {
+    // code to execute
+} while (condition);
+```
+**Example-01:**
+```php
+$i = 1;
+do {
+    echo $i++;
+} while ($i <= 5);
+
+```
+
+**Example-02:**
+
+Scenario: Print numbers from 1 to 5 using while and do-while loops.
+
+```php
+// while loop
+$i = 1;
+while ($i <= 5) {
+    echo $i++;
+}
+
+// do-while loop
+$i = 1;
+do {
+    echo $i++;
+} while ($i <= 5);
+```
+
+### for Loop 
+
+for Loop: Used for a known number of iterations.
+
+**Syntax:**
+```php
+for (initialization; condition; increment) {
+    // code to execute
+}
+```
+**Example:**
+```php
+for ($i = 1; $i <= 5; $i++) {
+    echo $i;
+}
+```
+### foreach Loop: 
+
+    foreach Loop Specifically designed for iterating over arrays.
+
+**Syntax:**
+```php
+foreach (array as $value) {
+    // code to execute
+}
+```
+**Example-01:**
+```php
+$colors = ['red', 'green', 'blue'];
+foreach ($colors as $color) {
+    echo $color;
+}
+```
+**Example-02:**
+**Scenario:** Iterate through an array of user names and display them.
+```php
+$userNames = ['Alice', 'Bob', 'Charlie'];
+
+foreach ($userNames as $name) {
+    echo "Hello, $name!";
+}
+```
+
+## Understanding Loop Control: break and continue
+
+break exits the loop prematurely, while continue skips the rest of the current iteration and proceeds with the next one.
+
+### Syntax for break:
+
+```php
+while (condition) {
+    if (break_condition) {
+        break;
+    }
+    // code
+}
+```
+### Syntax for continue:
+
+```php
+while (condition) {
+    if (continue_condition) {
+        continue;
+    }
+    // code
+}
+```
+### Example
+
+```php
+// break example
+for ($i = 1; $i <= 5; $i++) {
+    if ($i == 3) {
+        break;
+    }
+    echo $i; // Output: 1 2
+}
+
+// continue example
+for ($i = 1; $i <= 5; $i++) {
+    if ($i == 3) {
+        continue;
+    }
+    echo $i; // Output: 1 2 4 5
+}
+```
+#### Scenario: Find the first even number greater than 5 and stop the loop.
+
+```php
+for ($i = 1; $i <= 10; $i++) {
+    if ($i % 2 == 0 && $i > 5) {
+        echo $i;
+        break;
+    }
+}
+```
+
+## 📝 Alternative Syntax for Control Structures
+
+Alternative syntax is useful when mixing PHP with HTML, particularly in templates. It enhances readability and separates PHP code from HTML.
+
+**Syntax for if-else:**
+```php
+  <?php if (condition): ?>
+      <!-- HTML code here -->
+  <?php else: ?>
+      <!-- Alternative HTML code here -->
+  <?php endif; ?>
+```
+
+**Syntax for foreach:**
+```php
+  <?php foreach ($array as $item): ?>
+      <!-- HTML code here -->
+  <?php endforeach; ?>
+```
+**Example-01:**
+```php
+  <?php if ($isLoggedIn): ?>
+      <p>Welcome, <?= $username ?>!</p>
+  <?php else: ?>
+      <p>Please <a href="login.php">log in</a>.</p>
+  <?php endif; ?>
+```
+**Example-02:**
+
+**Scenario:** Display user profile information if logged in, otherwise prompt for login.
+
+```php
+  <?php
+  $isLoggedIn = true;
+  $username = 'JohnDoe';
+  ?>
+
+  <?php if ($isLoggedIn): ?>
+      <h1>Hello, <?= $username ?>!</h1>
+      <p>Welcome back to your dashboard.</p>
+  <?php else: ?>
+      <p>Please <a href="login.php">log in</a> to continue.</p>
+  <?php endif; ?>
+```
+
+# 🌟 Functions in PHP: A Comprehensive Guide
+
+  - **Defining Functions**  
+      - Function declaration and calling
+      - Function arguments and return values
+  - **Advanced Function Concepts**  
+      - Default argument values
+      - Variable-length argument lists using `...$args`
+      - Understanding pass by value vs pass by reference
+  - **Scope and Lifetime of Variables**  
+      - Local, global, and static scope
+      - Superglobals: `$_GET`, `$_POST`, `$_SESSION`, etc.
+  - **Anonymous Functions and Closures**  
+      - Defining and using anonymous functions
+      - Binding variables to closures using `use`
+
+## 🚀 2.4 Functions
+
+Functions are reusable pieces of code that perform a specific task. They help in organizing code into logical blocks, making it more readable, maintainable, and reusable.
+
+### 📝 Defining Functions
+
+#### 📌 Function Declaration and Calling
+
+A **function** is defined using the `function` keyword followed by the function name and a set of parentheses `()`. Function names should be meaningful, indicating the task they perform.
+
+**Syntax:**
+```php
+function functionName() {
+    // Code to be executed
+}
+```
+**Calling a Function:**
+
+```php
+functionName(); // This executes the code inside the function
+```
+**Example:**
+```php
+function sayHello() {
+    echo "Hello, World!";
+}
+
+sayHello(); // Output: Hello, World!
+```
+
+### 📌 Function Arguments and Return Values
+
+Functions can take arguments (also known as parameters) to work with data and return values after processing them.
+
+**Syntax:**
+```php
+  function functionName($arg1, $arg2) {
+      // Code to process arguments
+      return $result; // Returns a value
+  }
+```
+**Example-01:**
+```php
+  function add($a, $b) {
+      return $a + $b;
+  }
+
+  echo add(3, 5); // Output: 8
+```
+**Example-02:**
+
+**Scenario:** Calculate the area of a rectangle using a function.
+
+```php
+  function calculateArea($length, $width) {
+      return $length * $width;
+  }
+
+  echo calculateArea(5, 10); // Output: 50
+```
+### 🔍 Advanced Function Concepts
+
+#### 📌 Default Argument Values
+
+You can define default values for function arguments. If no value is passed when the function is called, the default value is used.
+
+**Syntax:**
+```php
+  function greet($name = "Guest") {
+      echo "Hello, $name!";
+  }
+
+  greet(); // Output: Hello, Guest!
+  greet("Alice"); // Output: Hello, Alice!
+```
+#### 📌 Variable-Length Argument Lists using ...$args
+
+PHP allows you to pass a variable number of arguments to a function using the ... operator.
+
+**Syntax:**
+```php
+  function sum(...$numbers) {
+      $total = 0;
+      foreach ($numbers as $number) {
+          $total += $number;
+      }
+      return $total;
+  }
+
+  echo sum(1, 2, 3, 4); // Output: 10
+```
+**Example:**
+
+**Scenario:** Create a function to concatenate multiple strings.
+```php
+  function concatenateStrings(...$strings) {
+      return implode(" ", $strings);
+  }
+
+  echo concatenateStrings("PHP", "is", "fun!"); // Output: PHP is fun!
+```
+
+#### 📌 Understanding Pass by Value vs Pass by Reference
+
+By default, PHP passes arguments by value, meaning the original variable is not modified. You can pass by reference using the & symbol to allow the function to modify the original variable.
+
+**Pass by Value Example:**
+```php
+  function addOne($number) {
+      $number++;
+  }
+
+  $num = 5;
+  addOne($num);
+  echo $num; // Output: 5
+```
+
+#### Pass by Reference Example:
+
+```php
+function addOne(&$number) {
+    $number++;
+}
+
+$num = 5;
+addOne($num);
+echo $num; // Output: 6
+```
+
+### 🌐 Scope and Lifetime of Variables
+
+#### 📌 Local, Global, and Static Scope
+
+**Local Variables:** Defined inside a function and not accessible outside.
+
+**Global Variables:** Defined outside any function and accessible globally. Use the global keyword to access them inside functions.
+
+**Static Variables:** Retain their value between function calls.
+
+**Examples:**
+```php
+  // Global scope
+  $globalVar = "I am global";
+
+  function testScope() {
+      // Local scope
+      $localVar = "I am local";
+      
+      global $globalVar;
+      echo $globalVar; // Output: I am global
+  }
+
+  testScope();
+  echo $localVar; // Error: Undefined variable $localVar
+
+  function staticVarExample() {
+      static $count = 0;
+      $count++;
+      echo $count;
+  }
+
+  staticVarExample(); // Output: 1
+  staticVarExample(); // Output: 2
+```
+#### 📌 Superglobals: $_GET, $_POST, $_SESSION, etc.
+
+Superglobals are built-in variables in PHP that are always accessible, regardless of scope. They include $_GET, $_POST, $_SESSION, $_COOKIE, and more, often used to handle user input and session management.
+
+**Example:**
+
+```php
+    // Using $_GET to capture query string parameters
+    echo $_GET['username'];
+
+    // Using $_POST to capture form data
+    echo $_POST['email'];
+
+    // Using $_SESSION to store session data
+    session_start();
+    $_SESSION['user'] = "JohnDoe";
+    echo $_SESSION['user']; // Output: JohnDoe
+```
+
+### 🔒 Anonymous Functions and Closures
+
+#### 📌 Defining and Using Anonymous Functions
+
+Anonymous functions (also called closures) are functions without a name. They are often used as callback functions or when you need a quick, one-time-use function.
+
+**Syntax:**
+```php
+  $greet = function($name) {
+      echo "Hello, $name!";
+  };
+
+  $greet("World"); // Output: Hello, World!
+```
+#### 📌 Binding Variables to Closures using use
+
+You can bind variables from the parent scope to an anonymous function using the use keyword.
+
+**Syntax:**
+```php
+  $message = "Hello";
+
+  $example = function($name) use ($message) {
+      echo "$message, $name!";
+  };
+
+  $example("Alice"); // Output: Hello, Alice!
+```
+**Example:**
+
+**Scenario:** Create a function to generate a personalized greeting message using closures.
+
+```php
+  function createGreeting($greeting) {
+      return function($name) use ($greeting) {
+          return "$greeting, $name!";
+      };
+  }
+
+  $helloGreeting = createGreeting("Hello");
+  echo $helloGreeting("John"); // Output: Hello, John!
+
+  $goodbyeGreeting = createGreeting("Goodbye");
+  echo $goodbyeGreeting("John"); // Output: Goodbye, John!
+```
+
+
+
+# 3. 📝 Working with Data in PHP
+
+## 📊 3.1 Arrays
+
+Arrays are fundamental data structures in PHP that allow you to store multiple values in a single variable. Arrays can hold various data types, including numbers, strings, and even other arrays. Let's explore the different types of arrays and the array functions available in PHP.
+
+### 📌 Types of Arrays
+
+1. **Indexed Arrays**: Arrays with numeric indices.
+2. **Associative Arrays**: Arrays with named keys.
+3. **Multidimensional Arrays**: Arrays containing one or more arrays.
+
+#### 1. Indexed Arrays: Numeric Indices
+
+Indexed arrays use numeric indices starting from 0 by default. These are useful for storing a list of items.
+
+**Syntax:**
+```php
+  $fruits = array("Apple", "Banana", "Orange");
+  // OR using short syntax
+  $fruits = ["Apple", "Banana", "Orange"];
+```
+**Example:**
+```php
+  $colors = ['Red', 'Green', 'Blue'];
+  echo $colors[0]; // Output: Red
+```
+
+**Case Study:** 
+
+**Scenario:** Store a list of fruits and display each one.
+```php
+$fruits = ["Apple", "Banana", "Orange"];
+foreach ($fruits as $fruit) {
+    echo $fruit . "<br>";
+}
+```
+#### 2. Associative Arrays: Named Keys
+
+Associative arrays use named keys that you assign to them. This type of array is useful when you want to store key-value pairs.
+
+**Syntax:**
+```php
+  $person = array("name" => "John", "age" => 30, "city" => "New York");
+  // OR using short syntax
+  $person = ["name" => "John", "age" => 30, "city" => "New York"];
+```
+**Case Study:**
+
+**Scenario:** Store and display information about a person.
+```php
+  $person = ["name" => "John", "age" => 30, "city" => "New York"];
+  echo "Name: " . $person["name"] . "<br>";
+  echo "Age: " . $person["age"] . "<br>";
+  echo "City: " . $person["city"];
+```
+#### 3. Multidimensional Arrays: Arrays of Arrays
+Multidimensional arrays contain other arrays as their elements. This is useful for storing complex data structures.
+
+**Syntax:**
+
+```php
+    $matrix = array(
+        array(1, 2, 3),
+        array(4, 5, 6),
+        array(7, 8, 9)
+    );
+
+    $departments = [
+        'HR' => ['Alice', 'Bob'],
+        'IT' => ['Charlie', 'Dave']
+    ];
+
+    $students = array(
+    array("John", 18, "A"),
+    array("Alice", 17, "B"),
+    array("Bob", 19, "A")
+    );
+    // OR using short syntax
+    $students = [
+        ["John", 18, "A"],
+        ["Alice", 17, "B"],
+        ["Bob", 19, "A"]
+    ];
+```
+
+**Example:** Store and display information about multiple students.
+
+```php
+ $students = [
+    ["John", 18, "A"],
+    ["Alice", 17, "B"],
+    ["Bob", 19, "A"]
+];
+
+foreach ($students as $student) {
+    echo "Name: " . $student[0] . ", Age: " . $student[1] . ", Grade: " . $student[2] . "<br>";
+}
+```
+### ⚙️ Array Functions
+
+PHP provides a variety of functions to manipulate arrays. Here’s a look at some of the most commonly used ones.
+
+#### 1. Creating Arrays: array(), Short Array Syntax []
+- **array():** Creates an array.
+- Short array syntax []: A shorthand way to create an array.
+
+- **Example:**
+  ```php
+     $animals = array('Cat', 'Dog', 'Elephant'); // Using array()
+     $cars = ['Toyota', 'Honda', 'Ford']; // Using short syntax
+  ```
+- **Case Study:** Scenario: Create an array of colors and print each color.
+  ```php
+    $colors = ["Red", "Green", "Blue"];
+    foreach ($colors as $color) {
+        echo $color . "<br>";
+    }
+  ```
+#### 2. Adding/Removing Elements : array_push(), array_pop(), array_shift(), array_unshift()
+- **array_push():** Adds one or more elements to the end of an array.
+- **array_pop():** Removes the last element of an array.
+- **array_shift():** Removes the first element of an array.
+- **array_unshift():** Adds one or more elements to the beginning of an array.
+
+- **Syntax:**
+  ```php
+      array_push($array, $value1, $value2, ...);
+      array_pop($array);
+      array_shift($array);
+      array_unshift($array, $value1, $value2, ...);
+  ```
+- **Example:**
+  ```php
+    $numbers = [1, 2, 3];
+    array_push($numbers, 4); // $numbers is now [1, 2, 3, 4]
+    array_pop($numbers); // $numbers is now [1, 2, 3]
+
+    array_shift($numbers); // $numbers is now [2, 3]
+    array_unshift($numbers, 0); // $numbers is now [0, 2, 3]
+  ```
+
+- **Case Study:**
+
+  **Scenario:** Manage a list of colors by adding and removing elements.
+  ```php
+     $colors = ["Red", "Green", "Blue"];
+
+    // Adding elements
+    array_push($colors, "Yellow");
+    array_unshift($colors, "Pink");
+
+    // Removing elements
+    array_pop($colors);
+    array_shift($colors);
+
+    foreach ($colors as $color) {
+        echo $color . "<br>";
+    }
+  ```
+
+#### 3. Array Traversal : foreach, array_map()
+
+- **foreach:** Loops through an array.
+- **array_map():** Applies a callback function to each element of an array.
+- **Syntax:**
+  ```php
+     foreach ($array as $value) {
+       // code to execute
+    }
+    $newArray = array_map('callbackFunction', $array);
+  ```
+- **Example:** 
+  ```php
+     $colors = ['red', 'green', 'blue'];
+
+     foreach ($colors as $color) {
+          echo $color;
+     }
+
+    $numbers = [1, 2, 3];
+    $squares = array_map(fn($n) => $n * $n, $numbers); // [1, 4, 9]
+  ``` 
+- **Case Study:** 
+  **Scenario:** Convert a list of prices to include tax.
+  ```php
+    $prices = [100, 200, 300];
+    $pricesWithTax = array_map(function($price) {
+       return $price * 1.2;
+    }, $prices);
+  ```
+  **Scenario:** Traverse an array of numbers and double each value using array_map().
+  ```php
+   $numbers = [1, 2, 3, 4, 5];
+
+  // Traversal using foreach
+  foreach ($numbers as $number) {
+      echo $number . "<br>";
+  }
+
+  // Doubling each value using array_map
+  $doubled = array_map(function($n) {
+      return $n * 2;
+  }, $numbers);
+
+  foreach ($doubled as $double) {
+      echo $double . "<br>";
+  }
+  ```
+#### 4. Array Search Functions : in_array(), array_search(), array_key_exists()
+ 
+- **in_array():** Checks if a value exists in an array.
+- **array_search():** Searches the array for a value and returns the first corresponding key if successful.
+- **array_key_exists():**  Checks if the specified key exists in the array.
+- **Syntax:**
+  ```php
+     if (in_array("value", $array)) {
+    // code
+  }
+
+  $key = array_search("value", $array);
+
+  if (array_key_exists("key", $array)) {
+    // code
+  }
+  ```
+- **Example:**
+
+  ```php
+    $fruits = ['apple', 'banana', 'cherry'];
+
+    if (in_array('banana', $fruits)) {
+        echo 'Banana is in the list!';
+    }
+
+    $key = array_search('cherry', $fruits); // $key is 2
+
+    $user = ['username' => 'johndoe'];
+    if (array_key_exists('username', $user)) {
+        echo 'User exists!';
+    }
+  ```
+
+- **Case Study:**
+  
+  **Scenario:** Check if a product is in stock.
+
+  ```php
+    $products = ['laptop', 'mouse', 'keyboard'];
+
+    if (in_array('mouse', $products)) {
+        echo 'Mouse is available!';
+    } else {
+        echo 'Mouse is out of stock!';
+    }
+  ```
+
+  **Scenario:** Search for a specific fruit in an array and check if it exists.
+
+  ```php
+   $fruits = ["Apple", "Banana", "Orange"];
+
+  // in_array example
+  if (in_array("Banana", $fruits)) {
+    echo "Banana is in the array.<br>";
+  }
+
+  // array_search example
+  $key = array_search("Orange", $fruits);
+  if ($key !== false) {
+    echo "Orange is at index: " . $key . "<br>";
+  }
+
+  // array_key_exists example
+  if (array_key_exists(0, $fruits)) {
+    echo "Index 0 exists in the array and contains: " . $fruits[0];
+  }
+  ```
+
+#### 5. Array Sorting Functions:sort(), asort(), ksort(), usort()
+- **sort():** Sorts an indexed array in ascending order.
+- **asort():** Sorts an associative array in ascending order, according to the value.
+- **ksort():** Sorts an associative array in ascending order, according to the key.
+- **usort():** Sorts an array by values using a user-defined comparison function.
+- **Syntax:** 
+  ```php
+  sort($array);
+  asort($array);
+  ksort($array);
+  usort($array, 'comparisonFunction');
+
+  ```
+- **Example:** 
+  ```php
+  $numbers = [4, 2, 8, 6];
+  sort($numbers); // $numbers is now [2, 4, 6, 8]
+
+  $ages = ['Peter' => 35, 'John' => 25, 'Anna' => 45];
+  asort($ages); // $ages is now ['John' => 25, 'Peter' => 35, 'Anna' => 45]
+  ksort($ages); // $ages is now ['Anna' => 45, 'John' => 25, 'Peter' => 35]
+
+  $products = [
+      ['name' => 'Laptop', 'price' => 1000],
+      ['name' => 'Tablet', 'price' => 500]
+  ];
+  usort($products, function($a, $b) {
+      return $a['price'] <=> $b['price'];
+  });
+
+  ```
+- **Case Study:** 
+
+  **Scenario:** Sort a list of employees by their age.
+
+  ```php
+    $employees = [
+     ['name' => 'John', 'age' => 28],
+     ['name' => 'Jane', 'age' => 32],
+     ['name' => 'Dave', 'age' => 25]
+    ];
+
+    usort($employees, function($a, $b) {
+    return $a['age'] <=> $b['age'];
+    });
+  ```
