@@ -2148,3 +2148,103 @@ PHP provides a variety of functions to manipulate arrays. Here’s a look at som
     return $a['age'] <=> $b['age'];
     });
   ```
+
+## 📜 3.2 Strings in PHP
+
+Strings are one of the most commonly used data types in PHP. This guide provides a detailed exploration of string creation, formatting, functions, and encoding.
+
+### 🏗️ String Creation and Formatting
+
+#### 1. Single Quotes vs. Double Quotes
+
+In PHP, strings can be defined using either single quotes or double quotes. The choice affects how the string is processed.
+
+**Single Quotes (`'`):**  
+- Strings enclosed in single quotes are treated as literal strings.  
+- Variables inside single quotes are not evaluated.  
+- Special characters like `\n` are not parsed.
+
+**Syntax:**
+```php
+$string = 'This is a string in single quotes.';
+```
+**Example:**
+```php
+$name = 'John';
+echo 'Hello, $name'; // Output: Hello, $name
+```
+
+**Double Quotes ("):**  
+- Strings enclosed in double quotes allow variable interpolation and escape sequences. 
+- Variables inside double quotes are evaluated.
+- Special characters like \n are parsed.
+
+**Syntax:**
+```php
+$string = "This is a string in double quotes.";
+```
+**Example:**
+```php
+$name = 'John';
+echo "Hello, $name"; // Output: Hello, John
+```
+
+**Case Study:** 
+
+**Scenario:** You need to construct a greeting message using a user's name.
+
+```php
+  $userName = "Alice";
+  echo 'Welcome, ' . $userName . '!'; // Output: Welcome, Alice!
+  echo "Welcome, $userName!"; // Output: Welcome, Alice!
+```
+#### 2. Heredoc and Nowdoc Syntax
+
+**Heredoc:**
+Heredoc provides a way to define large blocks of text. It behaves like double-quoted strings but is more convenient for multi-line text.
+
+**Syntax:**
+```php
+$heredoc = <<<EOT
+This is a heredoc string.
+It supports variables like $variable and escape sequences.
+EOT;
+```
+**Example:**
+```php
+$name = 'Bob';
+$heredoc = <<<EOT
+Hello, $name!
+Welcome to the Heredoc example.
+EOT;
+
+echo $heredoc;
+// Output:
+// Hello, Bob!
+// Welcome to the Heredoc example.
+```
+**Nowdoc:**
+Nowdoc is similar to Heredoc but behaves like single-quoted strings. It does not parse variables or escape sequences.
+
+**Syntax:**
+```php
+$nowdoc = <<<'EOT'
+This is a nowdoc string.
+Variables like $variable are not parsed.
+EOT;
+```
+**Example:**
+
+```php
+  $nowdoc = <<<'EOT'
+  Hello, $name!
+  This is a Nowdoc example.
+  EOT;
+
+  echo $nowdoc;
+  // Output:
+  // Hello, $name!
+  // This is a Nowdoc example.
+```
+
+### 🛠️ String Functions
