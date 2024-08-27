@@ -2247,4 +2247,112 @@ EOT;
   // This is a Nowdoc example.
 ```
 
-### 🛠️ String Functions
+## 🛠️ String Functions
+
+### 1. Finding and Extracting Substrings
+
+**a. strlen()**
+Returns the length of a string.
+
+**Syntax:**
+```php
+$length = strlen($string);
+```
+**Example:**
+```php
+echo strlen("Hello, World!"); // Output: 13
+```
+
+**b. strpos()**
+Finds the position of the first occurrence of a substring in a string.
+
+**Syntax:**
+```php
+$position = strpos($string, $substring);
+```
+**Example:**
+```php
+$position = strpos("Hello, World!", "World");
+echo $position; // Output: 7
+```
+**c. substr()**
+Returns a portion of a string.
+
+**Syntax:**
+```php
+$substring = substr($string, $start, $length);
+```
+**Example:**
+```php
+$substring = substr("Hello, World!", 7, 5);
+echo $substring; // Output: World
+```
+
+**Case Study:**
+
+**Scenario:** Extract the domain name from a URL.
+```php
+  $url = "https://www.example.com/path";
+  $start = strpos($url, "www.") + 4;
+  $length = strpos($url, "/", $start) - $start;
+  $domain = substr($url, $start, $length);
+  echo $domain; // Output: example.com
+```
+
+#### 2. Modifying Strings
+
+**a. str_replace()**
+Replaces all occurrences of a search string with a replacement string.
+
+**Syntax:**
+```php
+$newString = str_replace($search, $replace, $subject);
+```
+**Example:**
+```php
+echo str_replace("World", "PHP", "Hello, World!"); // Output: Hello, PHP!
+```
+
+**b. strtolower()**
+Converts a string to lowercase.
+
+**Syntax:**
+```php
+$lowercase = strtolower($string);
+```
+**Example:**
+```php
+echo strtolower("HELLO, WORLD!"); // Output: hello, world!
+```
+
+**c. strtoupper()**
+Converts a string to uppercase.
+
+**Syntax:**
+```php
+$uppercase = strtoupper($string);
+```
+**Example:**
+```php
+echo strtoupper("hello, world!"); // Output: HELLO, WORLD!
+```
+
+**d. ucfirst()**
+Capitalizes the first character of a string.
+**Syntax:**
+```php
+$capitalized = ucfirst($string);
+```
+**Example:**
+```php
+echo ucfirst("hello, world!"); // Output: Hello, world!
+```
+**Case Study:**
+**Scenario:** Clean up and format user input for display.
+```php
+$userInput = "   HeLLo, WoRLD!  ";
+$cleanInput = trim($userInput); // Remove extra spaces
+$formattedInput = ucfirst(strtolower($cleanInput)); // Capitalize first letter
+echo $formattedInput; // Output: Hello, world!
+```
+
