@@ -1113,7 +1113,7 @@ $status = ($age >= 18) ? "Adult" : "Minor";
 echo $status; // Output: Adult
 ```
 Flow Chart:<br/>
-   ![alt text](image.png)
+   ![alt text](images/image-16.png)
 
 Example :
 
@@ -1137,7 +1137,7 @@ if(condition){
 }  
 ```
 Flowchart:<br/>
-![alt text](image-3.png)
+![alt text](images/image-13.png)
 
 Example :
 
@@ -1164,7 +1164,7 @@ if (condition) {
 ```
 Flow Chart:<br/>
 
-![alt text](image-1.png)
+![alt text](images/image-11.png)
 
 
 Example-01:
@@ -1211,7 +1211,7 @@ if (condition1) {
 ```
 Flowchart :
 
-![alt text](image-2.png)
+![alt text](images/image-12.png)
 
 
 Example-01:
@@ -1267,7 +1267,7 @@ if (condition) {
 ```
 Flowchart: <br/>
 
-![alt text](image-4.png)
+![alt text](images/image-14.png)
 
 Example:
 
@@ -1328,7 +1328,7 @@ switch ($day) {
 
 Flow Chart:
 
-![alt text](image-5.png)
+![alt text](images/image-15.png)
 
 Example-01:
 
