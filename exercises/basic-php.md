@@ -58,7 +58,7 @@ $var = 'PHP Tutorial';
 ```
 
 ### 4. Create a simple HTML form and accept the user name and display the name through PHP echo statement.
-![alt text](image.png)
+![alt text](i/image.png)
 
 ```php
         <?php
