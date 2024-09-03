@@ -2613,3 +2613,19 @@ user_name_2024
 ```php
 user@example.com|token123
 ```
+
+
+# 3.3 Working with Forms
+
+- **Form Handling Basics**  
+  - HTML forms and form attributes
+  - Retrieving form data using `$_GET` and `$_POST`
+- **Data Validation and Sanitization**  
+  - Validating user input
+  - Sanitizing input to prevent injection attacks
+- **Handling File Uploads**  
+  - Understanding file upload process
+  - Validating and processing file uploads using `$_FILES`
+- **Preventing Form Resubmission**  
+  - Using Post/Redirect/Get (PRG) pattern
+  - Implementing CSRF protection
