@@ -2299,7 +2299,7 @@ echo $substring; // Output: World
   echo $domain; // Output: example.com
 ```
 
-#### 2. Modifying Strings
+### 2. Modifying Strings
 
 **a. str_replace()**
 Replaces all occurrences of a search string with a replacement string.
@@ -2356,3 +2356,260 @@ $formattedInput = ucfirst(strtolower($cleanInput)); // Capitalize first letter
 echo $formattedInput; // Output: Hello, world!
 ```
 
+### 3. Splitting and joining 
+
+**a. explode()**
+The `explode()` function in PHP is used to split a string by a specified delimiter into an array of substrings.
+
+**Syntax:**
+
+```php
+array explode ( string $delimiter , string $string [, int $limit = PHP_INT_MAX ] )
+```
+- **$delimiter:** The boundary string to split by.
+- **$string:** The input string.
+- **$limit:** (Optional) If specified, the number of array elements returned will be limited to this number.
+
+- **Example :**
+
+```php
+    <?php
+        $string = "apple,banana,cherry";
+        $array = explode(",", $string);
+        print_r($array);
+    ?>
+```
+
+- **Output:**
+
+```php
+  Array
+  (
+      [0] => apple
+      [1] => banana
+      [2] => cherry
+  )
+```
+
+**b. implode: Joining Strings** 
+
+The implode() function is used to join array elements into a single string, separated by a specified delimiter.
+
+**Syntax:**
+
+```php
+   string implode ( string $glue , array $pieces )
+```
+- **$glue:** The delimiter to use between the array elements.
+- **$pieces:** The array of strings to join.
+
+**Example:**
+```php
+   <?php
+    $array = ["apple", "banana", "cherry"];
+    $string = implode(", ", $array);
+    echo $string;
+    ?>
+```
+**output:**
+```php
+   apple, banana, cherry
+```
+### 3. Regular expressions
+
+**a. preg_match()**
+
+The preg_match() function searches a string for a pattern defined by a regular expression and returns whether a match was found.
+
+**Syntax:**
+```php
+int preg_match ( string $pattern , string $subject [, array &$matches [, int $flags = 0 [, int $offset = 0 ]]] )
+```
+- **$pattern:** The pattern to search for, as a string.
+- **$subject:** The input string.
+- **$matches:** (Optional) If matches are found, the results are stored in this array.
+- **$flags:** (Optional) Flags to modify the match behavior.
+- **$offset:** (Optional) The search offset.
+
+**Example:**
+```php
+<?php
+  $string = "The quick brown fox jumps over the lazy dog.";
+  $pattern = "/quick/";
+  if (preg_match($pattern, $string)) {
+      echo "Match found!";
+  } else {
+      echo "No match found.";
+  }
+  ?>
+```
+
+**b. preg_replace()**
+The preg_replace() function performs a search and replace using a regular expression.
+**Syntax:**
+```php
+mixed preg_replace ( mixed $pattern , mixed $replacement , mixed $subject [, int $limit = -1 [, int &$count ]] )
+```
+- **$pattern:** The pattern to search for, as a string or array of strings.
+- **$replacement:** The replacement string or array of strings.
+- **$subject:**  The input string or array of strings.
+- **$limit:** (Optional) The maximum possible replacements for each pattern in each subject string.
+- **$count:** (Optional) If specified, this variable will be filled with the number of replacements done.
+
+**Example:** 
+```php
+  <?php
+  $string = "The quick brown fox jumps over the lazy dog.";
+  $pattern = "/fox/";
+  $replacement = "cat";
+  $newString = preg_replace($pattern, $replacement, $string);
+  echo $newString;
+  ?>
+```
+**Output:**
+```php
+  The quick brown cat jumps over the lazy dog.
+```
+
+### 4. String Encoding and Decoding
+
+String encoding and decoding are crucial for data transmission and storage, especially when dealing with non-ASCII characters or binary data.
+
+#### Encoding : base64_encode() 
+**Syntax:**
+
+```php
+string base64_encode ( string $data )
+```
+-**$data: The data to encode.**
+
+**Example:**
+```php
+  <?php
+  $data = "Hello, World!";
+  $encodedData = base64_encode($data);
+  echo $encodedData;
+  ?>
+```
+
+**Output:**
+
+```php
+SGVsbG8sIFdvcmxkIQ==
+```
+
+
+#### Decoding : base64_decode()
+
+The base64_decode() function decodes data encoded in base64.
+
+**Syntax:**
+
+```php
+string base64_decode ( string $data [, bool $strict = false ] )
+```
+-**$data: The encoded data.**
+-**$strict: (Optional) If set to true, the function will return false if the input contains characters outside the base64 alphabet.**
+
+**Example:**
+```php
+  <?php
+  $encodedData = "SGVsbG8sIFdvcmxkIQ==";
+  $decodedData = base64_decode($encodedData);
+  echo $decodedData;
+  ?>
+```
+
+**Output:**
+
+```php
+  Hello, World!
+```
+
+#### Case Studies
+
+**Case Study 1: Splitting and Joining CSV Data**
+
+Scenario: You are working on a web application that allows users to upload CSV files containing product data. You need to split the CSV string into individual records for processing and then join them back into a string for storage.
+
+```php
+  <?php
+    $csvData = "product1,10,100\nproduct2,20,200\nproduct3,30,300";
+    $rows = explode("\n", $csvData);
+
+    foreach ($rows as $row) {
+        $columns = explode(",", $row);
+        print_r($columns); // Process each column
+    }
+
+    $newCsvData = implode("\n", $rows);
+    echo $newCsvData;
+  ?>
+```
+
+**Output:**
+
+```
+    Array
+    (
+        [0] => product1
+        [1] => 10
+        [2] => 100
+    )
+    Array
+    (
+        [0] => product2
+        [1] => 20
+        [2] => 200
+    )
+    Array
+    (
+        [0] => product3
+        [1] => 30
+        [2] => 300
+    )
+    product1,10,100
+    product2,20,200
+    product3,30,300
+```
+**Case Study 2: Validating and Sanitizing User Input**
+
+Scenario: You are developing a user registration form. You need to validate that the username only contains alphanumeric characters and replace any invalid characters with an underscore.
+
+**Solution:**
+```php
+  <?php
+  $username = "user@name!2024";
+  $pattern = "/[^a-zA-Z0-9]/";
+  $replacement = "_";
+  $sanitizedUsername = preg_replace($pattern, $replacement, $username);
+  echo $sanitizedUsername;
+  ?>
+```
+**Output:**
+
+```
+user_name_2024
+```
+
+**Case Study 3: Securely Transmitting Data**
+
+**Scenario:** You need to send sensitive data, such as a password reset link, via email. To avoid issues with special characters, you decide to encode the data.
+
+**Solution:**
+
+```php
+    <?php
+    $data = "user@example.com|token123";
+    $encodedData = base64_encode($data);
+
+    // Transmission...
+
+    $decodedData = base64_decode($encodedData);
+    echo $decodedData;
+    ?>
+```
+**Output:**
+```php
+user@example.com|token123
+```
