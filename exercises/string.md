@@ -1,20 +1,20 @@
 ### 1. Write a PHP script to : -
   
-        a) transform a string all uppercase letters.<br>
-        b) transform a string all lowercase letters.<br>
-        c) make a string's first character uppercase.<br>
-        d) make a string's first character of all the words uppercase.<br>
+        a) transform a string all uppercase letters.
+        b) transform a string all lowercase letters.
+        c) make a string's first character uppercase.
+        d) make a string's first character of all the words uppercase
 
 ```php
 <?php
 // Convert all characters to uppercase
-print(strtoupper("the quick brown fox jumps over the lazy dog."))."\n";
+print(strtoupper("the quick brown fox jumps over the lazy dog.")."\n");
 // Convert all characters to lowercase
-print(strtolower("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG"))."\n";
+print(strtolower("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG")."\n");
 // Make the first character uppercase
-print(ucfirst("the quick brown fox jumps over the lazy dog."))."\n";
+print(ucfirst("the quick brown fox jumps over the lazy dog.")."\n");
 // Make the first character of each word uppercase
-print(ucwords("the quick brown fox jumps over the lazy dog."))."\n";
+print(ucwords("the quick brown fox jumps over the lazy dog.")."\n");
 ?>
 ```
 ### 2. Write a PHP script to split the following string.
