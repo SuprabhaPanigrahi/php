@@ -3252,26 +3252,606 @@ print_r($safe_input);
 ## **3.3.3 Handling File Uploads**  
   ### 3.3.3.1 Understanding file upload process
   ### 3.3.3.2 Validating and processing file uploads using `$_FILES`
+
+## 📁✨ 3.3.3 File Uploads in PHP ✨📁
+
+File uploads in PHP are an essential feature for handling various types of content like images, documents, or videos. PHP provides built-in functionality to upload files, and the process can be executed securely with validation and proper file handling techniques.
+
+---
+This section covers:
+
+- Understanding the file upload process.
+- Validating and processing file uploads using the `$_FILES` superglobal.
+
+---
+
+### **3.3.3.1 Understanding File Upload Process** 🚀
+
+Uploading files with PHP is a straightforward process but understanding the underlying mechanics helps ensure smooth and secure uploads.
+
+---
+
+### **Step-by-Step Breakdown:**
+
+1. **Form Submission** 📤  
+   The process begins with a **HTML form** where the user selects a file to upload. The form must use the `POST` method and include the attribute `enctype="multipart/form-data"` to properly handle file uploads.
+   
+   ```html
+   <form action="upload.php" method="POST" enctype="multipart/form-data">
+       <input type="file" name="fileToUpload">
+       <input type="submit" value="Upload File">
+   </form>
+2. **$_FILES Superglobal 📂**  
+When a file is uploaded, PHP automatically populates the $_FILES superglobal array. This array holds the information about the file, such as:
+
+1. `$_FILES['fileToUpload']['name']`: The original name of the file.
+2. `$_FILES['fileToUpload']['tmp_name']`: The temporary file location on the server.
+3. `$_FILES['fileToUpload']['size']`: The size of the uploaded file.
+4. `$_FILES['fileToUpload']['type']`: The MIME type of the file.
+5. `$_FILES['fileToUpload']['error']`: Any errors that occurred during the upload.
+
+**3.Temporary File Location 🗂️**
+
+After submitting the form, PHP moves the file to a temporary location in the server. To save the file permanently, you’ll need to move it from the temporary directory to the desired directory using `move_uploaded_file()`.
+
+**4.Final Destination 📁**
+The uploaded file can be moved to its final location in the filesystem for use by the application.
+
+**Flowchart of File Upload Process 🛠️**
+
+``` mermaid
+graph TD;
+
+    A[User Selects File] --> B[Form Submits to PHP Script]
+    B --> C{Check $_FILES}
+    C -->|Valid File| D[Save Temporary File]
+    D --> E[Move to Permanent Folder]
+    C -->|Error Occurs| F[Show Error Message]
+```
+
+### 3.3.3.2 Validating and Processing File Uploads using $_FILES ✅
+
+Before allowing a file upload, it's critical to validate the file for security and consistency. The validation process ensures that:
+
+- The file is of an allowed type (e.g., `.jpg`, `.pdf`).
+- The file size is within acceptable limits.
+- The upload completed without errors.
+
+#### Step-by-Step Validation and Processing:
+
+**1. Check for Errors ❌**
+
+The `$_FILES` array holds error codes in the error field, which should be checked before processing the file.
+
+```php
+if ($_FILES['fileToUpload']['error'] !== UPLOAD_ERR_OK) {
+    echo "Error uploading file.";
+    exit;
+}
+```
+**2. Validate File Size 📏**
+
+It's essential to limit file size to avoid users uploading excessively large files that may exhaust server resources.
+
+```php
+   $maxFileSize = 2 * 1024 * 1024; // 2 MB
+  if ($_FILES['fileToUpload']['size'] > $maxFileSize) {
+      echo "File is too large!";
+      exit;
+  }
+```
+
+**3.Validate File Type 🖼️**
+Restrict uploads to specific file types (e.g., images only). This reduces the risk of malicious files being uploaded.
+
+```php
+$allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+if (!in_array($_FILES['fileToUpload']['type'], $allowedTypes)) {
+    echo "Invalid file type!";
+    exit;
+}
+```
+**Move Uploaded File 📂**
+Once validation is complete, use move_uploaded_file() to move the file from the temporary location to its final destination.
+
+```php
+  $targetDirectory = 'uploads/';
+  $targetFile = $targetDirectory . basename($_FILES['fileToUpload']['name']);
+
+  if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $targetFile)) {
+      echo "File uploaded successfully!";
+  } else {
+      echo "Failed to upload file!";
+  }
+```
+
+**5.File Overwrite Protection 🚫**
+To prevent accidental overwriting, check if the file already exists in the target directory.
+
+```php
+  if (file_exists($targetFile)) {
+      echo "File already exists!";
+      exit;
+  }
+```
+
+**Example: Complete File Upload PHP Code 🎯**
+```php
+<?php
+  $targetDirectory = "uploads/";
+  $maxFileSize = 2 * 1024 * 1024; // 2 MB
+  $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      // Check if file was uploaded without errors
+      if ($_FILES['fileToUpload']['error'] === UPLOAD_ERR_OK) {
+          $fileName = basename($_FILES['fileToUpload']['name']);
+          $targetFile = $targetDirectory . $fileName;
+
+          // Validate file size
+          if ($_FILES['fileToUpload']['size'] > $maxFileSize) {
+              echo "File is too large!";
+              exit;
+          }
+
+          // Validate file type
+          if (!in_array($_FILES['fileToUpload']['type'], $allowedTypes)) {
+              echo "Invalid file type!";
+              exit;
+          }
+
+          // Check if file already exists
+          if (file_exists($targetFile)) {
+              echo "File already exists!";
+              exit;
+          }
+
+          // Move uploaded file to target directory
+          if (move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $targetFile)) {
+              echo "File uploaded successfully: " . $fileName;
+          } else {
+              echo "File upload failed!";
+          }
+      } else {
+          echo "Error uploading file!";
+      }
+  }
+?>
+```
+
+**Security Best Practices for File Uploads 🔒**
+1. File Type Checking: Always check the MIME type and file extension.
+2. Limit File Size: Prevent large file uploads to reduce server load.
+3. File Permissions: Ensure proper file permissions are set on the uploaded files.
+4. Avoid Storing in Public Directories: Store uploads in non-public directories and serve them via a script.
+
+
 ## **3.3.4 Preventing Form Resubmission**  
    ### 3.3.4.1 Using Post/Redirect/Get (PRG) pattern
    ### 3.3.4.2 Implementing CSRF protection
+---
+### 🛡️✨ 3.3.4  Preventing Form Resubmission 🔄 in PHP ✨🛡️
 
-# 3.4 File Handling
-- **Working with Files**  
+When users submit forms, they might accidentally resubmit the form by refreshing the page. This can cause unintended consequences like **duplicate submissions** (e.g., placing the same order twice). To prevent this, we can use two important techniques:
+
+1. **Post/Redirect/Get (PRG) Pattern**
+
+2. **CSRF (Cross-Site Request Forgery) Protection**
+
+### **3.3.4.1 Using Post/Redirect/Get (PRG) Pattern** 🚦
+
+The **Post/Redirect/Get (PRG)** pattern is a common web development practice to prevent duplicate form submissions. The pattern ensures that after a user submits a form, they are redirected to a new page, preventing resubmission on page refresh.
+
+
+### **Step-by-Step Breakdown:**
+
+1. **The Problem** ⚠️  
+   - A user submits a form using the `POST` method.
+   - After submission, they refresh the page.
+   - The form is submitted again, causing **duplicate actions** like processing the same order twice, creating duplicate records, etc.
+
+2. **How PRG Works** 🚦  
+   After a form submission:
+   - **Post Request**:✉️ The form data is first submitted to the server using the `POST` method.
+   - **Server Processes the Data**:💾  The server processes the form data (e.g., storing it in a database or performing calculations).
+   - **redirect response**:🔀  After processing, instead of showing the result immediately, the server sends a `Location` header to redirect the user to a different page (usually a "success" page).
+   - **GET Request**:🔍 The browser then makes a `GET` request to the new page, which only displays the result and doesn’t resubmit the form.
+
+3. **Example Code of PRG Pattern** 💻  
+   Here's an implementation of the **PRG pattern** in PHP:
+
+   #### Step 1: Create an HTML Form 📝
+    This form submits data using the `POST` method:
+
+    ```html
+      <form action="submit.php" method="POST">
+          <label for="name">Name:</label>
+          <input type="text" name="name" id="name" required>
+          <input type="submit" value="Submit">
+      </form>
+    ```
+   #### Step 2: Process the Form Data on the Server 🚀
+   In the submit.php file, handle the form data and then redirect the user to another page:
+  ```php
+    <?php
+      if ($_SERVER["REQUEST_METHOD"] == "POST") 
+      {
+        // Process form data
+        $name = $_POST['name'];
+
+        // Perform actions like saving to database
+
+        // Redirect to success page to avoid resubmission
+        header("Location: success.php");
+        exit();
+      }
+    ?>
+  ```
+
+#### Step 3: Redirect to the "Success" Page 🎉
+
+**Redirecting to the same page:**
+```php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Process form
+    // ...
+
+    // Redirect to prevent duplicate form submission
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
+}
+```
+
+**4. Advantages of PRG Pattern ✨**
+
+- `Prevents Duplicate Submissions:` Users can't accidentally resubmit the form by refreshing the page.
+
+- `Improves user experience:` Provides better UX by ensuring that only one action occurs per submission.
+
+- `Secures data:` Avoids double processing of sensitive data.
+
+- `Easier Bookmarking:` The GET request for the success page allows users to bookmark the result page without resubmitting data.
+
+**Flowchart of PRG Pattern 🛠️**
+```mermaid
+graph TD;
+    A[Form Submission] -->|POST Request| B[Process Form Data];
+    B --> C[Redirect to Success Page];
+    C -->|GET Request| D[Display Success Message];
+```
+
+### **3.3.4.2 Implementing CSRF Protection 🔐** 🚦
+CSRF (Cross-Site Request Forgery) attacks trick users into unknowingly submitting a form from another malicious site, leading to unintended actions like account changes, fund transfers, etc. To prevent this, we use `CSRF tokens`  .
+
+**Step-by-Step Breakdown of CSRF Protection**
+
+**Step 1: Generate a CSRF Token 🛡️**
+
+A unique token is generated for each session, ensuring that the form submission comes from the original user:
+
+```php
+ // Start the session
+session_start();
+
+// Generate a unique token for CSRF protection
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+```
+**Step 2: Add CSRF Token to Form 🚀**
+Include the CSRF token as a hidden field in the form:
+
+```html
+  <form action="process.php" method="POST">
+    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" required>
+    <input type="submit" value="Submit">
+</form>
+```
+**Step 3: Validate the CSRF Token on Submission 🔑**
+
+When the form is submitted, check if the CSRF token matches the one stored in the session:
+
+```php
+ <?php
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Check if CSRF token matches
+    if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        die("CSRF token validation failed!");
+    }
+
+    // Process the form data if token is valid
+    $email = $_POST['email'];
+    echo "Email submitted: " . htmlspecialchars($email);
+}
+?>
+```
+**Step 4: Regenerate CSRF Token After Submission 🔄**
+
+Once the form is processed, it's a good practice to regenerate the token for the next form submission:
+
+```php
+   // Regenerate CSRF token
+$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+```
+
+**🔄 Flowchart: CSRF Token Validation**
+```mermaid
+graph TD;
+    A[Generate CSRF Token] --> B[Embed Token in Form];
+    B --> C[User Submits Form];
+    C --> D[Validate CSRF Token];
+    D -->|Valid| E[Process Form Data];
+    D -->|Invalid| F[Reject Submission];
+```
+
+**Best Practices for CSRF Protection 🛡️**
+
+1. `Always Use CSRF Tokens:` Include a unique CSRF token in every form that performs sensitive actions.
+2. `Use Secure Session Management:` Make sure your session management is secure and the tokens are stored securely.
+3. `Validate Tokens on Every Submission:` Ensure that tokens are validated for every POST request to avoid attacks.
+
+### 3.4 File Handling
+- **3.4.1 Working with Files**  
   - Opening files: `fopen()`, `fread()`, `fwrite()`, `fclose()`
   - Reading files: `file_get_contents()`
   - Writing to files: `file_put_contents()`
   - File locking and unlocking: `flock()`
-- **File Information and Operations**  
+- **3.4.2 File Information and Operations**  
   - Checking file existence: `file_exists()`
   - File permissions and attributes: `chmod()`, `chown()`, `fileperms()`
   - Renaming, copying, and deleting files: `rename()`, `copy()`, `unlink()`
-- **Working with Directories**  
+- **3.4.3 Working with Directories**  
   - Creating and removing directories: `mkdir()`, `rmdir()`
   - Reading directory contents: `opendir()`, `readdir()`, `scandir()`
   - Navigating directories: `chdir()`, `getcwd()`
 
+---
 
+# 🌟 **3.4 File Handling in PHP** 🌟
+
+File handling is a powerful feature in PHP that allows developers to create, open, read, write, and manipulate files on the server. This capability is vital for creating dynamic web applications that can interact with the file system, store user-generated data, or read configuration files.
+
+---
+
+## ### **3.4.1 Working with Files** 📂
+
+PHP offers several built-in functions to handle files. Let’s explore some of the most commonly used file operations.
+
+### **Opening Files: `fopen()`, `fread()`, `fwrite()`, `fclose()`** 📝
+
+1. **`fopen()`** – Opens a file in the specified mode (read, write, append, etc.).
+   - **Syntax:**
+
+     ```php
+     $file = fopen("example.txt", "w"); // Opens file in write mode
+     ```
+
+   - **Case Study:**  
+     A user uploads a feedback form, and the server writes the form data to a text file for storage.
+
+2. **`fread()`** – Reads data from an open file.
+   - **Syntax:**
+
+     ```php
+     $content = fread($file, filesize("example.txt")); // Reads the entire file
+     ```
+
+3. **`fwrite()`** – Writes data to an open file.
+   - **Syntax:**
+
+     ```php
+     fwrite($file, "This is a sample content.");
+     ```
+
+4. **`fclose()`** – Closes an open file to free up system resources.
+   - **Syntax:**
+
+     ```php
+     fclose($file);
+     ```
+
+---
+
+### **Reading Files: `file_get_contents()`** 📖
+
+This function reads an entire file and returns it as a string. It's a simple way to read file contents without the need to open and close the file explicitly.
+
+- **Syntax:**
+
+  ```php
+   $content = file_get_contents("example.txt");
+  ```
+**Example:** Reading an error log to display on an admin page.
+
+### **Writing to Files: `file_put_contents()` ✍️**
+Writes data to a file. This function is an easier alternative to fopen(), fwrite(), and fclose().
+
+- Syntax:
+  ```php
+  file_put_contents("example.txt", "New content here.");
+  ```
+**Example:** Storing user activity logs by appending new actions to a text file.
+
+### **File Locking and Unlocking: flock() 🔐**
+
+Locks a file to prevent conflicts from multiple users trying to access it at the same time.
+
+**Syntax:**
+```php
+   $file = fopen("example.txt", "w");
+if (flock($file, LOCK_EX)) {
+    fwrite($file, "Exclusive access!");
+    flock($file, LOCK_UN); // Unlocks the file
+}
+fclose($file);
+```
+**Case Study:** Locking a config file while it’s being edited to avoid concurrent changes.
+
+### 3.4.2 File Information and Operations 📝
+
+**Checking File Existence: `file_exists()` 🔍**
+
+Checks whether a file exists before performing any operation.
+
+**Syntax:**
+```php
+if (file_exists("example.txt")) {
+    echo "File exists!";
+} else {
+    echo "File does not exist.";
+}
+```
+
+**Example :**
+Check if a user's uploaded profile picture exists before trying to display it.
+
+### File Permissions and Attributes: `chmod()`, `chown()`, `fileperms()` 🔐
+
+1. chmod() – Changes file permissions.
+
+   **Syntax:**
+   ```php
+    chmod("example.txt", 0755); // Grants read, write, and execute permissions
+   ```
+2. chown() – Changes the ownership of a file.  
+   **Syntax:**
+   ```php
+   chown("example.txt", "user123"); // Assigns ownership to a specific user
+   ```
+3. fileperms() – Retrieves the file's permissions.
+   **Syntax:**
+   ```php
+   echo substr(sprintf('%o', fileperms("example.txt")), -4); // Displays file permissions
+   ```
+`Case Study:` An admin system automatically sets read-only permissions for sensitive files uploaded by users. 
+
+### Renaming, Copying, and Deleting Files: `rename()`, `copy()`, `unlink()` 🔄
+
+#### 1. `rename()` – Renames or moves a file.
+
+**Syntax:**
+```php
+rename("oldfile.txt", "newfile.txt"); // Renames the file
+```
+#### 2. `copy()` – Copies a file to another location.
+
+**Syntax:**
+```php
+copy("example.txt", "backup.txt"); // Creates a backup copy of the file
+```
+
+#### 3. `unlink()` – Deletes a file from the system.
+
+**Syntax:**
+```php
+unlink("example.txt"); // Deletes the file
+```
+
+`Case Study:` A temporary file is deleted after it has been processed.
+
+### 3.4.3 Working with Directories 📁
+
+#### A. Creating and Removing Directories: mkdir(), rmdir() 🏗️
+
+**1. mkdir() – Creates a new directory.**
+- Syntax:
+  ```php
+   mkdir("new_folder"); // Creates a new directory
+  ```
+**rmdir() – Removes an empty directory.**
+- Syntax:
+  ```php
+   rmdir("new_folder"); // Removes the directory
+  ```
+#### B. Reading Directory Contents: opendir(), readdir(), scandir() 📄
+
+**1. opendir() – Opens a directory for reading.**
+- Syntax:
+  ```php
+   $dir = opendir("path/to/directory"); // Opens the directory
+  ```
+**2. readdir() – Reads files and directories one by one.**
+- Syntax:
+  ```php
+   while ($file = readdir($dir)) {
+    echo "$file\n"; // Lists each file in the directory 
+    }
+    closedir($dir);
+  ```
+**3. scandir() – Scans the directory and returns its contents as an array.**
+- Syntax:
+  ```php
+  $files = scandir("path/to/directory");
+  print_r($files); // Displays the list of files in the directory
+  ```
+
+#### C. Navigating Directories: chdir(), getcwd() 🔄
+
+**1. chdir() – Changes the current directory.**
+- Syntax :
+  ```php
+  chdir("path/to/directory"); // Changes the current working directory
+  ```
+**2. getcwd() – Gets the current working directory.**
+- Syntax :
+  ```php
+  echo getcwd(); // Outputs the current working directory
+  ```
+
+### 📋 Case Study: File Management System 📋
+
+**Scenario:**
+
+A company wants to implement a simple file management system for their employees. Users should be able to upload, rename, copy, and delete files on the server. Additionally, directories should be created to store files by category (e.g., HR, Finance, Marketing).
+
+**Steps:**
+
+**1. Upload File:**
+
+Using `move_uploaded_file()` to store files uploaded via a form.
+
+```php
+if (move_uploaded_file($_FILES["file"]["tmp_name"], "uploads/" . $_FILES["file"]["name"])) {
+    echo "File uploaded successfully!";
+} else {
+    echo "File upload failed.";
+}
+```
+
+**2. Check if File Exists:**
+
+Before performing operations, use file_exists().
+
+```php
+if (file_exists("uploads/example.txt")) {
+    echo "File found!";
+}
+```
+
+**3. Rename File:**
+
+Use rename() to change the name of a file.
+
+```php
+rename("uploads/example.txt", "uploads/renamed_example.txt");
+```
+**4. Create Directory for Categories:**
+Use mkdir() to create directories for different file categories.
+```php
+mkdir("uploads/HR"); // Creates HR category folder
+```
+**5. List Files in Directory:**
+Use scandir() to display the contents of each category.
+```php
+$files = scandir("uploads/HR");
+foreach ($files as $file) {
+    echo $file . "<br>";
+}
+```
 ## 4. Object-Oriented PHP
 
 ### 4.1 Introduction to OOP in PHP
