@@ -3886,7 +3886,828 @@ foreach ($files as $file) {
   - Custom exception classes
 - **PHP Error Handling Mechanisms**  
   - Using `set_error_handler()` and `set_exception_handler()`
+---
+# 🌟 **4. Object-Oriented PHP** 🌟
 
+PHP offers a robust object-oriented programming (OOP) model that makes building modular, reusable, and maintainable code more straightforward. By mastering OOP, you can design complex systems that are both flexible and scalable.
+
+---
+
+## **4.1 Introduction to OOP in PHP** 📚
+
+**Object-Oriented Programming** allows developers to bundle related data and functions (methods) together inside "classes." OOP makes your code cleaner, modular, and reusable.
+
+---
+
+### **Basic Concepts** 🛠️
+
+#### 1. **Classes and Objects**
+
+- A **class** is like a blueprint for creating objects.
+- An **object** is an instance of a class, encapsulating related data (properties) and functions (methods).
+
+```php
+class Car {
+    public $brand;
+    public $model;
+
+    public function startEngine() {
+        return "The car has started.";
+    }
+}
+
+// Creating an object (instance)
+$myCar = new Car();
+$myCar->brand = "Toyota";
+$myCar->model = "Corolla";
+echo $myCar->startEngine();
+```
+Here, the class Car defines properties $brand and $model and a method startEngine. The object $myCar represents a specific car, like a Toyota Corolla.
+
+
+#### 2. Properties and Methods
+- **Properties:** Variables inside a class, holding data about the object.
+- **Methods:** Functions inside a class, defining behaviors of the object.
+
+**Case Study:** In a Hospital Management System, the Doctor class can have properties like `$name`, `$specialization`, and methods like `scheduleAppointment()`.
+
+```php
+class Doctor {
+    public $name;
+    public $specialization;
+
+    public function scheduleAppointment() {
+        return "Appointment scheduled.";
+    }
+}
+```
+#### Diagram: Class and Object Relationship
+```mermaid
+classDiagram
+    class Car {
+        +String brand
+        +String model
+        +startEngine(): String
+    }
+    Car --|> Object
+    Car : +brand
+    Car : +model
+```
+### Advanced OOP Features 🛠️
+
+#### 1. Constructors and Destructors
+
+- **Constructor (`__construct()`):** A special method automatically called when an object is created. Used to initialize object properties.
+Destructor (__destruct()): Invoked when the object is destroyed or the script ends. Used for cleanup tasks.
+
+- **Destructor (`__destruct()`):** Invoked when the object is destroyed or the script ends. Used for cleanup tasks.
+
+`Case Study:` Imagine a DatabaseConnection class that opens a connection in the constructor and closes it in the destructor.
+
+```php
+class DatabaseConnection {
+    private $connection;
+
+    public function __construct() {
+        // Initialize database connection
+        $this->connection = new PDO('mysql:host=localhost;dbname=test', 'root', '');
+        echo "Database connection opened.";
+    }
+
+    public function __destruct() {
+        // Close connection
+        $this->connection = null;
+        echo "Database connection closed.";
+    }
+}
+
+$db = new DatabaseConnection();
+```
+#### 2. Visibility: Public, Private, Protected
+
+- **Public:** Accessible from anywhere.
+- **Private:** Accessible only within the class.
+- **Protected:** Accessible within the class and its child classes.
+
+**Case Study:** In a Banking Application, sensitive data like account balance can be private, accessible only through getter/setter methods.
+
+```php
+class BankAccount {
+    private $balance;
+
+    public function __construct($initialBalance) {
+        $this->balance = $initialBalance;
+    }
+
+    public function getBalance() {
+        return $this->balance;
+    }
+
+    private function updateBalance($amount) {
+        $this->balance += $amount;
+    }
+}
+```
+
+#### Diagram: Visibility Levels :
+
+```mermaid
+classDiagram
+    class Person {
+        +name: string
+        -age: int
+        #email: string
+    }
+    Person : +setName()
+    Person : #setEmail()
+    Person : -calculateAge()
+```
+
+**Class: `Person`**
+
+This represents a class called Person. The class has three attributes (or properties) and three methods. Each attribute and method has a visibility modifier, indicating how accessible they are within and outside the class.
+
+**Attributes (Properties):**
+
+1. `+name: string`
+   - **`+:`** This symbol indicates public visibility, meaning this property is accessible from anywhere—both inside the class and from outside it.
+   - **`name:`** This is the property name, which represents a person's name.
+   - **`string:`** This is the data type of the property, meaning the name should store a string (i.e., a text value).
+
+2. `-age: int`
+   - **`-:`** This symbol indicates private visibility, meaning this property is accessible only within the class itself. Other classes or instances of this class cannot access it directly.
+   - **`age:`** The name of the property, representing a person’s age.
+   - **`int:`** This specifies that age should be of the type integer (whole number).
+
+2. `#email: string`
+   - **`#:`** This symbol indicates protected visibility, meaning the property is accessible within the class and its child (subclass) classes, but not accessible from outside the class.
+   - **`email:`**  This property represents a person's email address.
+   - **`string:`** This specifies that email should store a string (text value).
+
+##### Methods (Functions):
+1. `+setName()`
+   - **`+`** **Public visibility**, meaning this method can be accessed from **anywhere**x
+   - **`setName():`** This is a method (function) intended to set the value of the `name` property. The method would likely accept a string parameter and assign that to the `name` attribute.
+   
+    ```php
+      public function setName($newName) {
+      $this->name = $newName;
+    }
+2. `#setEmail()`
+   - **`#`** **Protected visibility,**, meaning this method can be accessed within the class and by child classes (subclasses) that inherit from this class, but not from outside the class.
+
+   - **`setEmail():`** A method that would be used to set or modify the email attribute, likely with some form of validation to ensure it is a valid email address.
+   
+    ```php
+    protected function setEmail($newEmail) {
+     if (filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+        $this->email = $newEmail;
+      }
+     }
+    }
+    ```
+  3. `-calculateAge()`
+   - **`-`** **Private visibility,**, meaning this method is only accessible within the class itself. It cannot be called from outside the class or even by subclasses.
+
+   - **`calculateAge():`** A private method that might calculate a person's age based on their birthdate, for example. This logic is hidden (encapsulated) within the class, so it's not exposed to other classes or external code.
+  ```php
+  private function calculateAge($birthYear) {
+    $currentYear = date('Y');
+    return $currentYear - $birthYear;
+  }
+  ```
+
+### Static Methods and Properties 🔄
+Static methods and properties belong to the class itself rather than any object, and can be accessed without creating an object instance.
+
+`Case Study:` A `MathUtility` class can hold common mathematical functions as static methods.
+```php
+class MathUtility {
+    public static function square($number) {
+        return $number * $number;
+    }
+}
+
+// Accessing static method
+echo MathUtility::square(5);  // Outputs: 25
+```
+
+```mermaid
+classDiagram
+    class ExampleClass {
+        - static $staticProperty: int
+        + static staticMethod(): int
+        + nonStaticMethod(): int
+    }
+
+    ExampleClass : + staticMethod()
+    ExampleClass : - staticProperty
+
+    class ObjectInstance {
+        + nonStaticMethod(): int
+    }
+
+    ExampleClass --> ObjectInstance : Creates object to access non-static method
+    ObjectInstance --> ExampleClass : Access static properties and methods
+```
+
+**Example**
+
+```mermaid
+   classDiagram
+    class BankAccount {
+        -static totalAccounts : int
+        +static getTotalAccounts(): int
+        +accountNumber: string
+        +balance: float
+        +deposit(amount: float)
+        +withdraw(amount: float)
+    }
+    
+    BankAccount : +getTotalAccounts()
+    BankAccount : +deposit(amount)
+    BankAccount : +withdraw(amount)
+    BankAccount : -totalAccounts
+
+    class User {
+        +createAccount(accountNumber: string, balance: float): BankAccount
+    }
+
+    User --> BankAccount : creates
+    BankAccount --> BankAccount : static getTotalAccounts()
+    BankAccount --> BankAccount : manages total accounts
+
+    User --> BankAccount : interacts with instance methods
+
+```
+
+#### Explanation:
+**1. `BankAccount` Class:**
+- `Static Property:` totalAccounts keeps track of the total number of bank accounts. Since it is static, it is shared across all instances of BankAccount.
+- `Static Method:` getTotalAccounts() allows accessing the static totalAccounts property to get the number of created accounts.
+- `Instance Members:` Each BankAccount has accountNumber and balance, which are unique to each object. You need to create an instance to access these.
+
+**2. `User` Class:**
+- The `User` class represents a person interacting with the bank. A user can create a new bank account by invoking `createAccount()`.
+
+**3. Interaction:**
+
+- **Static Method Call:** `BankAccount::getTotalAccounts()` is invoked at the class level, not on any specific object, to track the total number of accounts.
+- **Instance Method Call:** Once an account is created, a user interacts with their specific account by calling instance methods like `deposit()` and `withdraw()`.
+
+### Implemetation
+
+```php
+class BankAccount {
+    private static $totalAccounts = 0; // Static property
+    public $accountNumber;
+    public $balance;
+
+    public function __construct($accountNumber, $initialBalance) {
+        $this->accountNumber = $accountNumber;
+        $this->balance = $initialBalance;
+        self::$totalAccounts++; // Accessing static property
+    }
+
+    public static function getTotalAccounts() {
+        return self::$totalAccounts; // Static method to get total accounts
+    }
+
+    public function deposit($amount) {
+        $this->balance += $amount;
+    }
+
+    public function withdraw($amount) {
+        $this->balance -= $amount;
+    }
+}
+
+// Creating instances of BankAccount
+$account1 = new BankAccount('001', 1000);
+$account2 = new BankAccount('002', 500);
+
+// Accessing static method to get total accounts
+echo BankAccount::getTotalAccounts(); // Output: 2
+
+// Using instance methods
+$account1->deposit(200);
+$account2->withdraw(100);
+
+```
+## 4.2 Inheritance and Polymorphism 👨‍👩‍👦‍👦
+
+Inheritance allows one class to inherit the properties and methods of another, promoting code reuse.
+
+### Inheritance Basics 🌱
+
+Inheritance is a fundamental concept in Object-Oriented Programming (OOP) that allows a class to inherit properties and methods from another class. This helps to reuse code, avoid redundancy, and create a hierarchy of classes.
+
+In PHP, a class can inherit from another class using the extends keyword. The inheriting class (child) gains access to the properties and methods of the parent class.
+
+
+**1. Extending Classes Using `extends`**
+
+When a class extends another, it inherits all properties and methods of the parent class.
+
+`Case Study:` In an E-Commerce Platform, `PremiumCustomer` can extend `Customer` to add extra features for premium customers.
+
+```php
+class Customer {
+    public $name;
+    public $email;
+
+    public function purchase() {
+        return "Product purchased!";
+    }
+}
+
+class PremiumCustomer extends Customer {
+    public function accessPremiumSupport() {
+        return "Accessing premium support.";
+    }
+}
+
+$premiumUser = new PremiumCustomer();
+echo $premiumUser->accessPremiumSupport();
+```
+
+**2. Types of Inheritance in PHP**
+PHP supports `single inheritance`, meaning a class can only inherit from one parent class. However, through interfaces and traits, PHP also supports functionality similar to multiple inheritance.
+
+Here are the types of inheritance:
+
+1. Single Inheritance
+2. Multilevel Inheritance
+3. Hierarchical Inheritance
+4. Multiple Inheritance (Through Interfaces)
+
+#### 1. Single Inheritance
+In single inheritance, a class (child) inherits from only one parent class.
+
+**Syntax:**
+```php
+class ParentClass {
+    public $name;
+
+    public function sayHello() {
+        return "Hello, I am " . $this->name;
+    }
+}
+
+class ChildClass extends ParentClass {
+    public function introduce() {
+        return "I am " . $this->name;
+    }
+}
+```
+
+**Example:**
+
+```php
+class ParentClass {
+    public $name = "Parent";
+
+    public function sayHello() {
+        return "Hello, I am " . $this->name;
+    }
+}
+
+class ChildClass extends ParentClass {
+    public function introduce() {
+        return "I am a child of " . $this->name;
+    }
+}
+
+$child = new ChildClass();
+echo $child->sayHello(); // Output: Hello, I am Parent
+echo $child->introduce(); // Output: I am a child of Parent
+```
+**Diagram (Single Inheritance):**
+```mermaid
+classDiagram
+    class ParentClass {
+        +name: string
+        +sayHello(): string
+    }
+
+    class ChildClass {
+        +introduce(): string
+    }
+
+    ParentClass <|-- ChildClass
+```
+
+#### 2. Multilevel Inheritance
+In multilevel inheritance, a class inherits from a child class, which itself inherits from another class. This creates a chain of inheritance.
+
+**Syntax:**
+```php
+class Grandparent {
+    public function greet() {
+        return "Hello from Grandparent";
+    }
+}
+
+class ParentClass extends Grandparent {
+    public function greetParent() {
+        return "Hello from Parent";
+    }
+}
+
+class ChildClass extends ParentClass {
+    public function greetChild() {
+        return "Hello from Child";
+    }
+}
+```
+
+**Example:**
+
+```php
+class Grandparent {
+    public function greet() {
+        return "Hello from Grandparent";
+    }
+}
+
+class ParentClass extends Grandparent {
+    public function greetParent() {
+        return "Hello from Parent";
+    }
+}
+
+class ChildClass extends ParentClass {
+    public function greetChild() {
+        return "Hello from Child";
+    }
+}
+
+$child = new ChildClass();
+echo $child->greet();       // Output: Hello from Grandparent
+echo $child->greetParent(); // Output: Hello from Parent
+echo $child->greetChild();  // Output: Hello from Child
+```
+**Diagram (Multilevel Inheritance):**
+```mermaid
+classDiagram
+    class Grandparent {
+        +greet(): string
+    }
+
+    class ParentClass {
+        +greetParent(): string
+    }
+
+    class ChildClass {
+        +greetChild(): string
+    }
+
+    Grandparent <|-- ParentClass
+    ParentClass <|-- ChildClass
+```
+
+#### 3. Hierarchical Inheritance
+In hierarchical inheritance, multiple classes inherit from a single parent class.
+
+**Syntax:**
+```php
+class ParentClass {
+    public function greet() {
+        return "Hello from Parent";
+    }
+}
+
+class ChildClass1 extends ParentClass {
+    public function greetChild1() {
+        return "Hello from Child 1";
+    }
+}
+
+class ChildClass2 extends ParentClass {
+    public function greetChild2() {
+        return "Hello from Child 2";
+    }
+}
+```
+
+**Example:**
+
+```php
+class ParentClass {
+    public function greet() {
+        return "Hello from Parent";
+    }
+}
+
+class ChildClass1 extends ParentClass {
+    public function greetChild1() {
+        return "Hello from Child 1";
+    }
+}
+
+class ChildClass2 extends ParentClass {
+    public function greetChild2() {
+        return "Hello from Child 2";
+    }
+}
+
+$child1 = new ChildClass1();
+$child2 = new ChildClass2();
+
+echo $child1->greet();      // Output: Hello from Parent
+echo $child1->greetChild1();// Output: Hello from Child 1
+echo $child2->greet();      // Output: Hello from Parent
+echo $child2->greetChild2();// Output: Hello from Child 2
+```
+**Diagram (Multilevel Inheritance):**
+```mermaid
+classDiagram
+    class ParentClass {
+        +greet(): string
+    }
+
+    class ChildClass1 {
+        +greetChild1(): string
+    }
+
+    class ChildClass2 {
+        +greetChild2(): string
+    }
+
+    ParentClass <|-- ChildClass1
+    ParentClass <|-- ChildClass2
+```
+
+#### 4. Multiple Inheritance (Through Interfaces)
+PHP doesn't support multiple inheritance directly, but it can be achieved using interfaces. A class can implement multiple interfaces.
+
+**Syntax:**
+```php
+interface A {
+    public function methodA();
+}
+
+interface B {
+    public function methodB();
+}
+
+class ChildClass implements A, B {
+    public function methodA() {
+        return "Method A from Interface A";
+    }
+
+    public function methodB() {
+        return "Method B from Interface B";
+    }
+}
+```
+
+**Example:**
+
+```php
+interface A {
+    public function methodA();
+}
+
+interface B {
+    public function methodB();
+}
+
+class ChildClass implements A, B {
+    public function methodA() {
+        return "Method A from Interface A";
+    }
+
+    public function methodB() {
+        return "Method B from Interface B";
+    }
+}
+
+$child = new ChildClass();
+echo $child->methodA(); // Output: Method A from Interface A
+echo $child->methodB(); // Output: Method B from Interface B
+```
+**Diagram ((Multiple Inheritance with Interfaces):**
+```mermaid
+classDiagram
+    class A {
+        +methodA(): string
+    }
+
+    class B {
+        +methodB(): string
+    }
+
+    class ChildClass {
+        +methodA(): string
+        +methodB(): string
+    }
+
+    A <|.. ChildClass
+    B <|.. ChildClass
+```
+#### Case Study: `E-commerce System`
+
+In an e-commerce system, inheritance can be used to create a hierarchy for different types of users.
+
+- `Parent Class:` User - Common functionality for all users.
+- `Child Classes:` AdminUser, CustomerUser - Specific functionality for different types of users.
+
+**Example**
+```php
+class User {
+    protected $username;
+
+    public function __construct($username) {
+        $this->username = $username;
+    }
+
+    public function login() {
+        return $this->username . " logged in.";
+    }
+}
+
+class AdminUser extends User {
+    public function manageUsers() {
+        return $this->username . " is managing users.";
+    }
+}
+
+class CustomerUser extends User {
+    public function makePurchase() {
+        return $this->username . " is making a purchase.";
+    }
+}
+
+// Example usage
+$admin = new AdminUser("admin1");
+echo $admin->login();       // Output: admin1 logged in.
+echo $admin->manageUsers(); // Output: admin1 is managing users.
+
+$customer = new CustomerUser("customer1");
+echo $customer->login();        // Output: customer1 logged in.
+echo $customer->makePurchase(); // Output: customer1 is making a purchase.
+```
+
+### 2. Overriding Methods
+A child class can override methods inherited from the parent class.
+
+`Case Study:` In a Game Application, Mage and Warrior may extend Character, but each overrides attack() differently.
+
+```php
+class Character {
+    public function attack() {
+        return "Basic attack!";
+    }
+}
+
+class Mage extends Character {
+    public function attack() {
+        return "Casting a spell!";
+    }
+}
+
+class Warrior extends Character {
+    public function attack() {
+        return "Swinging a sword!";
+    }
+}
+```
+## Abstract Classes and Interfaces 🎭
+
+Abstract classes and interfaces provide ways to define common behaviors for different types of classes.
+
+#### 1. Abstract Classes
+
+An `abstract class` can define common functionality, but must be extended to be instantiated. It can include both abstract and regular methods.
+
+`Case Study:` In a Payment Gateway, abstract classes can enforce that all types of payment methods implement certain core features.
+
+```php
+abstract class PaymentGateway {
+    abstract public function processPayment($amount);
+
+    public function generateReceipt() {
+        return "Receipt generated.";
+    }
+}
+
+class CreditCardPayment extends PaymentGateway {
+    public function processPayment($amount) {
+        return "Processing credit card payment of $$amount.";
+    }
+}
+```
+#### 2. Interfaces
+
+An `interface` defines a set of methods that any implementing class must use. Unlike abstract classes, interfaces cannot contain any method implementations.
+
+`Case Study:` In a Messaging App, you can define an interface `MessageSender` to enforce a contract on classes implementing different messaging channels (SMS, Email, Push Notifications).
+
+```php
+interface MessageSender {
+    public function sendMessage($recipient, $message);
+}
+
+class SmsSender implements MessageSender {
+    public function sendMessage($recipient, $message) {
+        return "Sending SMS to $recipient: $message";
+    }
+}
+
+class EmailSender implements MessageSender {
+    public function sendMessage($recipient, $message) {
+        return "Sending Email to $recipient: $message";
+    }
+}
+```
+### Traits and Namespaces 🔀
+
+PHP traits allow code reuse in classes that don’t fit into traditional inheritance, while namespaces avoid name conflicts.
+
+**1. Traits**
+Traits allow you to reuse code across multiple classes without inheritance, solving multiple inheritance problems.
+
+`Case Study:` A Logger trait can be shared across multiple unrelated classes for logging messages.
+
+```php
+trait Logger {
+    public function log($message) {
+        echo "Logging: $message";
+    }
+}
+
+class User {
+    use Logger;
+}
+
+class Product {
+    use Logger;
+}
+
+$user = new User();
+$user->log("User logged in.");
+```
+
+### 2. Namespaces
+
+`Namespaces` help avoid naming conflicts, particularly in large applications.
+
+`Case Study:` In a large application with multiple modules (User, Admin), use namespaces to prevent collisions between similarly named classes.
+
+```php
+namespace App\Controllers;
+
+class UserController {
+    public function index() {
+        return "User controller index method.";
+    }
+}
+```
+## 4.3 Error Handling in OOP ⚠️
+
+Handling errors properly in OOP ensures your application runs smoothly and avoids crashing.
+
+#### Exception Handling 🚨
+
+PHP provides built-in exception handling using try, catch, and finally.
+
+###### 1. Using `try`, `catch`, `finally`
+
+```php
+try {
+    // Code that might throw an exception
+    if (!file_exists("testfile.txt")) {
+        throw new Exception("File not found.");
+    }
+} catch (Exception $e) {
+    echo "Caught exception: " . $e->getMessage();
+} finally {
+    echo "Finally block executed.";
+}
+```
+####  2. Custom Exception Classes
+
+You can extend the built-in Exception class to create custom exceptions.
+
+```php
+class FileNotFoundException extends Exception {
+    public function errorMessage() {
+        return "Error on line " . $this->getLine() . ": " . $this->getMessage();
+    }
+}
+
+try {
+    throw new FileNotFoundException("File not found!");
+} catch (FileNotFoundException $e) {
+    echo $e->errorMessage();
+}
+```
+
+## References 📘
+- [PHP Manual: OOP Basics](https://www.php.net/manual/en/language.oop5.basic.php)
+- [PHP Exception Handling](https://www.php.net/manual/en/language.exceptions.php)
+- [Traits in PHP](https://www.php.net/manual/en/language.oop5.traits.php)
 ## 5. Working with Databases
 
 ### 5.1 Introduction to Databases
