@@ -520,7 +520,7 @@ $(document).ready(function () {
 });
 ```
 
-## Step 7: Visualizing the Flow using Mermaid Diagrams
+## Step 7: Visualizing the Flow
 
 ```mermaid
 flowchart TD
