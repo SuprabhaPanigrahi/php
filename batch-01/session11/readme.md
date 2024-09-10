@@ -1,4 +1,4 @@
-# Employee Management System - CRUD Operation using PHP, OOP, MySQL, jQuery, and Bootstrap 5
+# Employee Management System - A Simple CRUD using AJAX
 
 This step-by-step guide walks through the creation of an employee management system that supports Create, Read, Update, and Delete (CRUD) operations. We'll use PHP with Object-Oriented Programming (OOP), MySQL for the database, jQuery for AJAX requests, and Bootstrap 5 for styling.
 
