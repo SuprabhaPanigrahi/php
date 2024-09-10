@@ -4705,9 +4705,12 @@ try {
 ```
 
 ## References 📘
+
 - [PHP Manual: OOP Basics](https://www.php.net/manual/en/language.oop5.basic.php)
 - [PHP Exception Handling](https://www.php.net/manual/en/language.exceptions.php)
 - [Traits in PHP](https://www.php.net/manual/en/language.oop5.traits.php)
+
+
 ## 5. Working with Databases
 
 ### 5.1 Introduction to Databases
@@ -4745,6 +4748,486 @@ try {
 - **Database Optimization**  
   - Understanding indexing and keys
   - Query optimization techniques
+
+-----
+## 5. Working with Databases in PHP
+This section will guide you through working with databases in PHP, particularly focusing on MySQL. You'll learn about the basic database concepts, how to connect PHP to a MySQL database, and how to perform CRUD (Create, Read, Update, Delete) operations.
+
+### 5.1 Introduction to Databases
+
+**Basic Concepts**
+
+- **Relational Databases:** A relational database stores data in tables consisting of rows and columns. Each table represents an entity (e.g., users, orders), and relationships can be established between tables.
+- **SQL (Structured Query Language):** SQL is a standard language used to interact with relational databases. SQL allows you to perform operations like selecting, inserting, updating, and deleting records.
+
+**Database Structure**
+
+```mermaid
+erDiagram
+    USERS {
+        int id PK
+        string username
+        string email
+    }
+    ORDERS {
+        int id PK
+        int user_id FK
+        date order_date
+    }
+    USERS ||--o{ ORDERS: places
+```
+### 5.2 Using MySQL with PHP
+#### Introduction to MySQL and MariaDB
+- MySQL and MariaDB are popular open-source relational database management systems (RDBMS).
+- They are widely used with PHP for web applications to store and retrieve data efficiently.
+
+###  5.3 Connecting to MySQL in PHP
+
+You can connect PHP to MySQL using two primary extensions:
+
+1. mysqli (MySQL Improved)
+
+2. PDO (PHP Data Objects)
+
+#### 5.3.1 Connecting Using mysqli
+```php
+<?php
+  $host = 'localhost';
+  $user = 'root';
+  $password = 'password';
+  $dbname = 'testdb';
+
+  // Create connection
+  $conn = new mysqli($host, $user, $password, $dbname);
+
+  // Check connection
+  if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+  }
+  echo "Connected successfully";
+?>
+```
+**Example Explained**
+- This code connects to a MySQL database hosted locally with the database name testdb.
+- If the connection fails, it outputs an error message. Otherwise, it prints "Connected successfully."
+
+```mermaid
+graph TD;
+    A[PHP Script] -->|Creates Connection| B[MySQL Database];
+    B -->|Returns Success/Failure| A;
+```
+#### 5.3.2 Connecting Using PDO
+
+```php
+<?php
+$dsn = 'mysql:host=localhost;dbname=testdb';
+$username = 'root';
+$password = 'password';
+
+try {
+    $pdo = new PDO($dsn, $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connected successfully";
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+}
+?>
+```
+**Example Explained**
+- PDO provides a more flexible and secure way to connect to databases compared to mysqli.
+- It uses a Data Source Name (DSN) for connecting to the MySQL database.
+- The try-catch block is used to handle connection errors gracefully.
+
+### 5.4 CRUD Operations (Create, Read, Update, Delete)
+
+CRUD operations are the backbone of database interaction. Below, we'll explore how to perform these operations using both mysqli and PDO.
+
+#### 5.4.1 Creating Databases and Tables
+**Creating a Table in MySQL**
+```sql
+  CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100),
+    email VARCHAR(100)
+);
+```
+#### 5.4.2 Inserting Data into Tables
+
+- **Using `mysqli` to Insert Data**
+```php
+<?php
+$sql = "INSERT INTO users (username, email) VALUES ('JohnDoe', 'john@example.com')";
+if ($conn->query($sql) === TRUE) {
+    echo "New record created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+?>
+```
+- **Using PDO to Insert Data**
+```php
+<?php
+$sql = "INSERT INTO users (username, email) VALUES (:username, :email)";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['username' => 'JohnDoe', 'email' => 'john@example.com']);
+echo "New record created successfully";
+?>
+```
+#### 5.4.3 Selecting Data from Tables
+
+- **Using mysqli to Select Data**
+```php
+<?php
+$sql = "SELECT * FROM users";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        echo "id: " . $row["id"]. " - Name: " . $row["username"]. " - Email: " . $row["email"]. "<br>";
+    }
+} else {
+    echo "0 results";
+}
+?>
+```
+- **Using PDO to Select Data**
+```php
+<?php
+$stmt = $pdo->query("SELECT * FROM users");
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    echo $row['id'] . ' ' . $row['username'] . ' ' . $row['email'] . '<br>';
+}
+?>
+```
+#### 5.4.4 Updating Data
+
+- **Using mysqli to Update Data**
+
+```php
+<?php
+$sql = "UPDATE users SET email='john_updated@example.com' WHERE username='JohnDoe'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+?>
+```
+- **Using PDO to Update Data**
+
+```php
+<?php
+$sql = "UPDATE users SET email=:email WHERE username=:username";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['email' => 'john_updated@example.com', 'username' => 'JohnDoe']);
+echo "Record updated successfully";
+?>
+```
+#### 5.4.5 Deleting Data
+
+- **Using mysqli to Delete Data**
+```php
+<?php
+$sql = "DELETE FROM users WHERE username='JohnDoe'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record deleted successfully";
+} else {
+    echo "Error deleting record: " . $conn->error;
+}
+?>
+```
+- **Using PDO to Delete Data**
+```php
+<?php
+$sql = "DELETE FROM users WHERE username=:username";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['username' => 'JohnDoe']);
+echo "Record deleted successfully";
+?>
+```
+
+### Case Study: Building a User Management System
+A user management system allows the administration and management of users, such as user registration, login, updating user information, and deleting accounts. In this example, we'll build a simple user management system using PHP and MySQL. We will cover:
+
+**1. User Registration**
+
+**2. User Login**
+
+**3. Updating User Information**
+
+**4. Deleting a User**
+
+
+#### System Flow Diagram
+
+```mermaid
+graph TD;
+    A[User Visits Registration Page] --> B[User Submits Form];
+    B --> C[PHP Validates Data];
+    C -->|Valid| D[Check if User Exists in Database];
+    D -->|User Exists| E[Show Error Message: User Already Exists];
+    D -->|User Doesn't Exist| F[Insert User into Database];
+    F --> G[Redirect to Login Page];
+
+    G --> H[User Enters Login Credentials];
+    H --> I[PHP Validates Credentials];
+    I -->|Valid| J[Start User Session];
+    J --> K[Redirect to Dashboard];
+    I -->|Invalid| L[Show Login Error Message];
+```
+#### Database Schema
+```sql
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+#### 1. User Registration
+
+**HTML Form for Registration**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h2>User Registration</h2>
+    <form action="register.php" method="post">
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br>
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br>
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>
+```
+#### PHP Code for Handling Registration (register.php)
+
+```php
+<?php
+$host = 'localhost';
+$user = 'root';
+$password = 'password';
+$dbname = 'user_management';
+
+// Create connection
+$conn = new mysqli($host, $user, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);  // Hashing password for security
+
+    // Check if the user already exists
+    $sql = "SELECT * FROM users WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        echo "User already exists";
+    } else {
+        // Insert new user
+        $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sss", $username, $email, $password);
+
+        if ($stmt->execute()) {
+            echo "Registration successful!";
+            header("Location: login.php");
+        } else {
+            echo "Error: " . $conn->error;
+        }
+    }
+}
+?>
+```
+
+#### 2. User Login
+
+**HTML Form for Login**
+```php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h2>User Login</h2>
+    <form action="login.php" method="post">
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br>
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>
+```
+#### PHP Code for Handling Login (login.php)
+
+```php
+<?php
+session_start();
+
+$host = 'localhost';
+$user = 'root';
+$password = 'password';
+$dbname = 'user_management';
+
+// Create connection
+$conn = new mysqli($host, $user, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    // Check if the user exists
+    $sql = "SELECT * FROM users WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        // Verify password
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            header("Location: dashboard.php");
+        } else {
+            echo "Invalid password!";
+        }
+    } else {
+        echo "No user found with this email!";
+    }
+}
+?>
+```
+
+#### 3. Updating User Information
+
+**HTML Form for Updating User Info**
+```php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Info</title>
+</head>
+<body>
+    <h2>Update Information</h2>
+    <form action="update.php" method="post">
+        <label for="username">New Username:</label>
+        <input type="text" name="username" required><br>
+        <label for="email">New Email:</label>
+        <input type="email" name="email" required><br>
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>
+```
+#### PHP Code for Updating User Info (update.php)
+
+```php
+<?php
+session_start();
+
+$host = 'localhost';
+$user = 'root';
+$password = 'password';
+$dbname = 'user_management';
+
+// Create connection
+$conn = new mysqli($host, $user, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $new_username = $_POST['username'];
+    $new_email = $_POST['email'];
+    $user_id = $_SESSION['user_id'];
+
+    // Update user info
+    $sql = "UPDATE users SET username = ?, email = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssi", $new_username, $new_email, $user_id);
+
+    if ($stmt->execute()) {
+        echo "User info updated successfully!";
+    } else {
+        echo "Error: " . $conn->error;
+    }
+}
+?>
+```
+#### 4. Deleting a User
+
+**PHP Code for Deleting User (delete.php)**
+```php
+<?php
+session_start();
+
+$host = 'localhost';
+$user = 'root';
+$password = 'password';
+$dbname = 'user_management';
+
+// Create connection
+$conn = new mysqli($host, $user, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+
+    // Delete user
+    $sql = "DELETE FROM users WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+
+    if ($stmt->execute()) {
+        echo "User deleted successfully!";
+        session_destroy();
+        header("Location: register.php");
+    } else {
+        echo "Error: " . $conn->error;
+    }
+}
+?>
+```
+
 
 
 ## 6. Working with Sessions and Cookies
