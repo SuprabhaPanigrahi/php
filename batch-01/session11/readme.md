@@ -37,7 +37,7 @@ employee-crud/
   - **classes/:** Contains the `employee.php` class to handle OOP logic.
   - **CSS folder:** Contains the styling.
   - **index.php:** The main page where the employees will be listed.
-  - `add_employee.php`, `update_employee.php`, `delete_employee.php`: Pages for adding, updating, and  deleting employees.
+ 
 
 ## Step 2: Database Configuration
 
