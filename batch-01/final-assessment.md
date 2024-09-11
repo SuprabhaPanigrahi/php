@@ -1,1 +1,48 @@
+# SIMPLE ECOMMERCE SITE USING PHP,MYSQL,OOPS
 
+   HOME , ABOUT,PRODUCTS,CART, LOGIN ,REGISTRATION
+
+   LANDING PAGE :
+      
+      PRODUCTS WILL VIEW IN CARDS 
+
+   LOGIN -> USER LOGIN
+
+            ADMIN LOGIN
+
+   USER REGISTER
+    -> USER LOGIN
+    -> USER DASBOARD
+    -> USER MANAGE HIS PROFILE
+    -> USER VIEW ORDERS
+    -> USER CAN ADD PRODUCT TO CART
+    -> CHECKOUT
+    -> LOGOUT
+
+   
+   ADMIN LOGIN :
+ 
+     ADMIN DASHBOARD
+
+     -> MANAGE USER
+            ADD
+            VIEW EDIT DELETE
+
+     -> MANAGE PRODUCT
+            ADD
+            VIEW EDIT DELETE
+
+     -> MANAGE ORDER
+            
+            VIEW 
+	    
+
+     -> LOGOUT
+
+
+
+
+-> Bootstrap5
+-> PHP (OOPS)
+-> MVC
+-> PDO
