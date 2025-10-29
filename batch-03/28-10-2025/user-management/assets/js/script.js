@@ -13,9 +13,6 @@ function clearErrorMessage(elementId) {
   
   document.getElementById(elementId).innerText = "";
 }
-
-
-
 function validateFullName() {
   if (!blankValidation('fullname', 'fullname_error', 'Full Name')) {
     return false;
@@ -28,7 +25,6 @@ function validateFullName() {
   }
   return true;
 }
-
 function validateEmail() {
   if (!blankValidation('email', 'email_error', 'Email')) {
     return false;
@@ -38,7 +34,6 @@ function validateEmail() {
   }
   return true;
 }
-
 function validatePassword() {
   if (!blankValidation('password', 'password_error', 'Password')) {
     return false;
