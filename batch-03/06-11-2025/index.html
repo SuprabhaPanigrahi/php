@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FileUpload Demo</title>
+  <style>
+    img{
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+   <form >
+    <label>Name</label>
+    <input type="text" id="name" placeholder="Enter Name"/>
+    <br/>
+    <label>Upload Image</label>
+    <input type="file" id="photo"/>
+    <br/>
+    <button type="submit">Save</button>
+    <hr/>
+    <div>
+      <img src="" alt="" />
+    </div>
+
+   </form>
+   <hr/>
+   <div>
+    <h1>USERS LIST</h1>
+    <div >
+      <table>
+          <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>IMAGE</th>
+          </tr>
+          <tbody id="user-data">
+
+          </tbody>
+      </table>
+    </div>
+   </div>
+   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+   <script>
+    $(document).ready(function(){
+      getUsers();
+      $('form').on('submit',function(e){
+          e.preventDefault();
+          let name = $("#name").val();
+          let file = $("#photo")[0].files[0];
+          console.log("file",file);
+          console.log('File Path',URL.createObjectURL(file));
+          console.log("name",name);
+          console.log("file",file);
+          console.log("file Name",file.name);
+          console.log("file Size",file.size);
+          console.log("file Type",file.type);
+          let extension = file.name.substring(file.name.lastIndexOf('.')+1);
+          console.log("Extension of the file",extension);
+          let permissableFiles =['png','jpg','jpeg','avif'];
+          let path=URL.createObjectURL($("#photo")[0]["files"][0]);
+          // 8 bit -> 1 byte 
+
+          // 1024 bytes(2^10) -> 1 KB
+
+          // 1024 KB    -> 1 MB
+
+          // file.size * 1024 * 1024 
+          if(permissableFiles.includes(extension)){
+              if((file.size/(1024*1024)) < 5){
+                   $('img').attr('src',path);
+              }else{
+                 alert("image size exceeds more that 3 MB");
+              }
+             
+          } else{
+             alert('Invalid Image type');
+          }
+
+          let formData = new FormData();
+          formData.append("name",name);
+          formData.append("file",file);
+           
+          $.ajax({
+            url:'server/process-uploaded-files.php',
+            type:'POST',
+            data:formData,
+            contentType: false,
+            processData: false,
+            success:function(response){
+                    console.log(response);
+                    getUsers();
+            },
+            error:function(error){
+                console.log(error);
+            }
+          });
+
+      });
+    });
+
+    function getUsers(){
+       $.ajax({
+        url:'server/get-users.php',
+        type:'GET',
+        
+        success:function(response){
+           let users = JSON.parse(response);
+           let rows='';
+           for(let user of users ){
+              rows+=`<tr>
+                <td>${user['id']}</td>
+                <td>${user['name']}</td>
+                <td><img src='server/uploads/${user['image']}' alt=''/></td>
+                </tr>`; 
+           }
+             $('#user-data').html(rows);
+              //console.log(response);  
+        }
+       });
+    }
+  </script>
+</body>
+
+</html>
